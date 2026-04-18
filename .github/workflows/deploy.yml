@@ -3,24 +3,28 @@ name: Hexo Deploy
 on:
   push:
     branches:
-      - main # 只有当你向 main 分支提交代码时，才触发自动部署
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20' # 回到 20，因为 24 目前对旧版 Hexo 插件不太友好
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install -g hexo-cli
+          # 关键操作：删除旧的 lock 文件，重新根据 package.json 安装
+          rm -f package-lock.json
+          npm install
 
       - name: Deploy Hexo
         env:
@@ -32,6 +36,6 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           git config --global user.name "1TRhez"
           git config --global user.email "saa.1trhez@gmail.com"
-          npx hexo clean
-          npx hexo generate
-          npx hexo deploy
+          hexo clean
+          hexo generate
+          hexo deploy
