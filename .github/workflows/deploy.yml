@@ -8,11 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
-        with:
-          submodules: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -22,27 +22,16 @@ jobs:
       - name: Install dependencies
         run: |
           npm install -g hexo-cli
-          rm -f package-lock.json
           npm install
 
-      - name: Deploy Hexo
+      - name: Deploy
         env:
-          ACTION_DEPLOY_KEY: ${{ secrets.HEXO_DEPLOY_PRI }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdir -p ~/.ssh/
-          # 核心修正：使用 echo -e 处理可能的换行符问题
-          echo -e "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          # 强制开启 RSA 兼容
-          echo "Host github.com
-            HostName github.com
-            User git
-            IdentityFile ~/.ssh/id_rsa
-            PubkeyAcceptedAlgorithms +ssh-rsa
-            HostkeyAlgorithms +ssh-rsa" > ~/.ssh/config
           git config --global user.name "1TRhez"
           git config --global user.email "saa.1trhez@gmail.com"
+          # 直接利用内置 Token 推送，不走 SSH
+          sed -i "s|github.com/1TRhez/1TRhez.github.io.git|x-access-token:${GITHUB_TOKEN}@github.com/1TRhez/1TRhez.github.io.git|g" _config.yml
           hexo clean
           hexo generate
           hexo deploy
