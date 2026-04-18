@@ -1,32 +1,4 @@
-name: Hexo Deploy
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20' # 回到 20，因为 24 目前对旧版 Hexo 插件不太友好
-
-      - name: Install dependencies
-        run: |
-          npm install -g hexo-cli
-          # 关键操作：删除旧的 lock 文件，重新根据 package.json 安装
-          rm -f package-lock.json
-          npm install
-
-      - name: Deploy Hexo
+- name: Deploy Hexo
         env:
           ACTION_DEPLOY_KEY: ${{ secrets.HEXO_DEPLOY_PRI }}
         run: |
@@ -34,6 +6,8 @@ jobs:
           echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
+          # 这一行是新加的：告诉 SSH 允许使用较旧的算法（解决 libcrypto 报错）
+          echo "PubkeyAcceptedKeyTypes +ssh-rsa" >> ~/.ssh/config
           git config --global user.name "1TRhez"
           git config --global user.email "saa.1trhez@gmail.com"
           hexo clean
