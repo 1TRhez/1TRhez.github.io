@@ -1,13 +1,46 @@
-- name: Deploy Hexo
+name: Hexo Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install -g hexo-cli
+          rm -f package-lock.json
+          npm install
+
+      - name: Deploy Hexo
         env:
           ACTION_DEPLOY_KEY: ${{ secrets.HEXO_DEPLOY_PRI }}
         run: |
           mkdir -p ~/.ssh/
-          echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
+          # 核心修正：使用 echo -e 处理可能的换行符问题
+          echo -e "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          # 这一行是新加的：告诉 SSH 允许使用较旧的算法（解决 libcrypto 报错）
-          echo "PubkeyAcceptedKeyTypes +ssh-rsa" >> ~/.ssh/config
+          # 强制开启 RSA 兼容
+          echo "Host github.com
+            HostName github.com
+            User git
+            IdentityFile ~/.ssh/id_rsa
+            PubkeyAcceptedAlgorithms +ssh-rsa
+            HostkeyAlgorithms +ssh-rsa" > ~/.ssh/config
           git config --global user.name "1TRhez"
           git config --global user.email "saa.1trhez@gmail.com"
           hexo clean
