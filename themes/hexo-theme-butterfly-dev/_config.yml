@@ -46,10 +46,12 @@ code_blocks:
 # Formal:
 #   icon: link || the description || color
 social: 
-  fab fa-github: https://github.com/saa1trhez-lgtm || Github || '#24292e'
-  fab fa-bilibili: https://space.bilibili.com/475888326 || BiliBili || '#fb7299'
+  fab fa-github: https://github.com/1TRhez || Github || '#24292e'
+  #fab fa-bilibili: https://space.bilibili.com/475888326 || BiliBili || '#fb7299'
   fab fa-qq: tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=2399637029 || QQ || '#1296db'
   fas fa-envelope: mailto:saa.1trhez@gmail.com || Email || '#4a7dbe'
+  fab fa-weixin: /img/wx-money.png || 微信 || '#119615'
+  # fab fa-weixin: /img/wx-money.png || 微信 || '#119615'
   # fas fa-envelope: mailto:xxxxxx@gmail.com || Email || '#4a7dbe'
 
 # --------------------------------------
@@ -151,13 +153,17 @@ index_site_info_top:
 index_top_img_height:
 
 # The subtitle on homepage
-subtitle:
+subtitle: 
   enable: true
   # Typewriter Effect
   effect: true
   # Customize typed.js
   # https://github.com/mattboldt/typed.js/#customization
-  typed_option: 1
+  typed_option:
+    typeSpeed: 100
+    loop: true
+    shuffle: true
+    backDelay: 1000
   # Source - Call the third-party service API (Chinese only)
   # It will show the source first, then show the content of sub
   # Choose: false/1/2/3
@@ -165,9 +171,14 @@ subtitle:
   # 1 - hitokoto.cn
   # 2 - https://api.aa1.cn/doc/yiyan.html
   # 3 - jinrishici.com
-  source: true
+  source: 3
   # If you close the typewriter effect, the subtitle will only show the first line of sub
-  sub:
+  sub: 
+    - "名不显时心不朽，再挑灯火看文章"
+    - "埋骨何须桑梓地，人生无处不青山"
+    - "寄蜉蝣于天地，渺沧海之一粟"
+    - "醉后不知天在水，满船清梦压星河"
+    - "凛冬散尽，星河长明"
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
@@ -265,9 +276,9 @@ footer:
     since: 2026
   # Copyright of theme and framework
   copyright:
-    enable: true
-    version: true
-  custom_text:
+    enable: false
+    version: false
+  custom_text: '<div class="footer-custom-text"><a href="https://icp.gov.moe/?keyword=20268838" target="_blank">✮萌ICP备20268838号✮</a></div>'
 
 # --------------------------------------
 # Aside Settings
@@ -292,10 +303,16 @@ aside:
       enable: true
       icon: fab fa-github
       text: 关注我的GitHub~
-      link: https://github.com/saa1trhez-lgtm
+      link: https://github.com/1TRhez
   card_announcement:
     enable: true
-    content: This is my Blog
+    content: |
+      Ciallo～(∠・ω< )⌒★ <br>
+      正在备战中考...🚀 <br>
+      不定时更新~ 常来看看~ <br><br>
+      请我喝杯咖啡？❤️<br>
+      <img src="/img/wx-money.png" style="width:70%; border-radius: 8px; margin-top: 10px;">
+
   card_recent_post:
     enable: true
     # If set 0 will show all
@@ -994,7 +1011,7 @@ pjax:
 
 # Inject the css and script (aplayer/meting)
 aplayerInject:
-  enable: false
+  enable: true
   per_page: true
 
 # Snackbar - Toast Notification
@@ -1059,9 +1076,9 @@ css_prefix: true
 
 # Inject
 # Insert the code to head (before '</head>' tag) and the bottom (before '</body>' tag)
+
 inject:
   head:
-    # - <link rel="stylesheet" href="/xxx.css">
   bottom:
     - <script src="https://cdn.jsdelivr.net/gh/wallleap/cdn@latest/js/sakura.js"></script>
 
