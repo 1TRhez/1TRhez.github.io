@@ -1,0 +1,535 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>机器学习实战入门：数据、特征与第一个模型 | 1TRhez.</title><meta name="author" content="1TRhez."><meta name="copyright" content="1TRhez."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="机器学习实战入门：数据、特征与第一个模型第一篇我们聊了机器学习的”是什么”，第二篇聊了它的”从哪来”。到了这一篇，该动手了。 但在你打开 Jupyter 敲下第一行 model.fit(X, y) 之前，有个残酷的事实要先说：真实项目里，80% 的时间都花在数据和特征上，而不是模型上。 新手最容易犯的错，就是急着调模型、换算法，结果输入的数据一团糟。 这一篇就专门讲这块最枯燥、也最值钱的部分。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习实战入门：数据、特征与第一个模型">
+<meta property="og:url" content="https://1trhez.github.io/2026/10/01/machine-learning-data-and-features/index.html">
+<meta property="og:site_name" content="1TRhez.">
+<meta property="og:description" content="机器学习实战入门：数据、特征与第一个模型第一篇我们聊了机器学习的”是什么”，第二篇聊了它的”从哪来”。到了这一篇，该动手了。 但在你打开 Jupyter 敲下第一行 model.fit(X, y) 之前，有个残酷的事实要先说：真实项目里，80% 的时间都花在数据和特征上，而不是模型上。 新手最容易犯的错，就是急着调模型、换算法，结果输入的数据一团糟。 这一篇就专门讲这块最枯燥、也最值钱的部分。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://1trhez.github.io/moon.ico">
+<meta property="article:published_time" content="2026-10-01T12:30:00.000Z">
+<meta property="article:modified_time" content="2026-10-01T13:01:03.095Z">
+<meta property="article:author" content="1TRhez.">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="科技">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://1trhez.github.io/moon.ico"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "机器学习实战入门：数据、特征与第一个模型",
+  "url": "https://1trhez.github.io/2026/10/01/machine-learning-data-and-features/",
+  "image": "https://1trhez.github.io/moon.ico",
+  "datePublished": "2026-10-01T12:30:00.000Z",
+  "dateModified": "2026-10-01T13:01:03.095Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "1TRhez.",
+      "url": "https://1trhez.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/moon.ico"><link rel="canonical" href="https://1trhez.github.io/2026/10/01/machine-learning-data-and-features/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5-b1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '机器学习实战入门：数据、特征与第一个模型',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/moon.ico" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/neko.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/moon.ico" alt="Logo"><span class="site-name">1TRhez.</span></a><a class="nav-page-title" href="/"><span class="site-name">机器学习实战入门：数据、特征与第一个模型</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">机器学习实战入门：数据、特征与第一个模型</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-01T12:30:00.000Z" title="发表于 2026-10-01 20:30:00">2026-10-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-01T13:01:03.095Z" title="更新于 2026-10-01 21:01:03">2026-10-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="机器学习实战入门：数据、特征与第一个模型"><a href="#机器学习实战入门：数据、特征与第一个模型" class="headerlink" title="机器学习实战入门：数据、特征与第一个模型"></a>机器学习实战入门：数据、特征与第一个模型</h1><p>第一篇我们聊了机器学习的”是什么”，第二篇聊了它的”从哪来”。到了这一篇，该动手了。</p>
+<p>但在你打开 Jupyter 敲下第一行 <code>model.fit(X, y)</code> 之前，有个残酷的事实要先说：<strong>真实项目里，80% 的时间都花在数据和特征上，而不是模型上。</strong> 新手最容易犯的错，就是急着调模型、换算法，结果输入的数据一团糟。</p>
+<p>这一篇就专门讲这块最枯燥、也最值钱的部分。</p>
+<hr>
+<h2 id="一、-数据：一切的上限"><a href="#一、-数据：一切的上限" class="headerlink" title="一、 数据：一切的上限"></a>一、 数据：一切的上限</h2><h3 id="1-1-数据决定了天花板"><a href="#1-1-数据决定了天花板" class="headerlink" title="1.1 数据决定了天花板"></a>1.1 数据决定了天花板</h3><p>业界有句话：</p>
+<blockquote>
+<p><strong>数据和特征决定了模型的上限，而算法只是在逼近这个上限。</strong></p>
+</blockquote>
+<p>这句话值得贴在显示器旁边。一个精心清洗的数据集配上一个普通算法，几乎总能打败一个脏数据集配上最先进的模型。所以在动手之前，先问自己三个问题：</p>
+<ol>
+<li><strong>数据够不够？</strong> 样本量太少，任何模型都会过拟合。</li>
+<li><strong>数据干不干净？</strong> 缺失值、异常值、重复行，都是陷阱。</li>
+<li><strong>标签对不对？</strong> 监督学习里，错误标签比没有标签更可怕。</li>
+</ol>
+<h3 id="1-2-数据的两种”病”"><a href="#1-2-数据的两种”病”" class="headerlink" title="1.2 数据的两种”病”"></a>1.2 数据的两种”病”</h3><p>拿到一份原始数据，第一件事是体检。最常见的两种病是：</p>
+<table>
+<thead>
+<tr>
+<th align="left">病症</th>
+<th align="left">表现</th>
+<th align="left">常见处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>缺失值 (Missing Value)</strong></td>
+<td align="left">某些格子是空的 &#x2F; NaN</td>
+<td align="left">删除、均值填充、中位数填充、模型预测填充</td>
+</tr>
+<tr>
+<td align="left"><strong>异常值 (Outlier)</strong></td>
+<td align="left">明显偏离正常范围</td>
+<td align="left">3σ 原则、IQR 四分位距、直接剔除或单独分析</td>
+</tr>
+</tbody></table>
+<p>⚠️ <strong>新手最容易踩的坑：看到缺失值就无脑 <code>dropna()</code>。</strong> 如果缺失本身带有信息（比如”没填收入”的人往往收入很低），删掉就等于把信号一起扔了。</p>
+<h3 id="1-3-一个必须改掉的直觉"><a href="#1-3-一个必须改掉的直觉" class="headerlink" title="1.3 一个必须改掉的直觉"></a>1.3 一个必须改掉的直觉</h3><p>传统编程里，我们把数据当”输入”。机器学习里，你得把数据当”教材”——<strong>你喂给它什么，它就学成什么样</strong>。喂偏了，它就会一本正经地胡说八道。这就是为什么”垃圾进，垃圾出”（Garbage In, Garbage Out）是这行最老的格言。</p>
+<hr>
+<h2 id="二、-特征工程：把原材料变成好食材"><a href="#二、-特征工程：把原材料变成好食材" class="headerlink" title="二、 特征工程：把原材料变成好食材"></a>二、 特征工程：把原材料变成好食材</h2><h3 id="2-1-什么是特征工程？"><a href="#2-1-什么是特征工程？" class="headerlink" title="2.1 什么是特征工程？"></a>2.1 什么是特征工程？</h3><p><strong>特征工程（Feature Engineering）</strong>，就是把原始数据转换成模型能更好利用的形式的过程。</p>
+<p>打个比方：原始数据是刚从菜市场买回来的菜，带着泥、带着根。特征工程就是洗、切、配的过程。同一堆菜，切得好不好，直接决定这顿饭好不好吃。</p>
+<h3 id="2-2-数值型特征：缩放是刚需"><a href="#2-2-数值型特征：缩放是刚需" class="headerlink" title="2.2 数值型特征：缩放是刚需"></a>2.2 数值型特征：缩放是刚需</h3><p>假设你在预测房价，特征有两个：<strong>面积（80~200）</strong> 和 <strong>房间数（1~5）</strong>。</p>
+<p>问题来了：面积这个数字天然比房间数大几十倍，很多算法（尤其是基于距离的 KNN、SVM，以及梯度下降类的模型）会<strong>误以为面积比房间数重要得多</strong>，仅仅因为它数值大。</p>
+<p>解决办法是<strong>特征缩放（Feature Scaling）</strong>，最常用的两种：</p>
+<p><strong>标准化（Standardization &#x2F; Z-score）</strong> —— 把数据变成均值 0、标准差 1：</p>
+<p>$$
+z &#x3D; \frac{x - \mu}{\sigma}
+$$</p>
+<p><strong>归一化（Normalization &#x2F; Min-Max）</strong> —— 把数据压缩到 [0, 1] 区间：</p>
+<p>$$
+x’ &#x3D; \frac{x - x_{min}}{x_{max} - x_{min}}
+$$</p>
+<p>怎么选？简单说：<strong>数据近似正态分布、有极端值时用标准化；需要固定区间、数据边界明确时用归一化。</strong> 不确定就用标准化，它更通用。</p>
+<p>⚠️ <strong>关键细节：缩放参数只能从训练集上算。</strong> 先用整个数据集算均值和标准差，再划分训练&#x2F;测试集——这叫<strong>数据泄漏（Data Leakage）</strong>，是初学者最隐蔽的错误之一，会让你在测试集上得到虚假的好成绩。</p>
+<h3 id="2-3-类别型特征：不能直接喂数字"><a href="#2-3-类别型特征：不能直接喂数字" class="headerlink" title="2.3 类别型特征：不能直接喂数字"></a>2.3 类别型特征：不能直接喂数字</h3><p>机器只认数字，但你的数据里往往有”男&#x2F;女”、”红&#x2F;绿&#x2F;蓝”这种文本。有两种编码方式：</p>
+<p><strong>独热编码（One-Hot Encoding）</strong>：给每个类别开一列，是就填 1，不是就填 0。</p>
+<table>
+<thead>
+<tr>
+<th align="left">颜色</th>
+<th align="left">→</th>
+<th align="left">红</th>
+<th align="left">绿</th>
+<th align="left">蓝</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">红</td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">绿</td>
+<td align="left"></td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">蓝</td>
+<td align="left"></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+</tr>
+</tbody></table>
+<p><strong>序号编码（Label &#x2F; Ordinal Encoding）</strong>：直接映射成 0, 1, 2。</p>
+<p>⚠️ <strong>这里有个大坑</strong>：如果类别之间<strong>没有大小关系</strong>（比如颜色），用序号编码会让模型误以为”蓝 &gt; 绿 &gt; 红”。这时候必须用独热编码。</p>
+<p>但如果类别<strong>本身有顺序</strong>（比如”低&#x2F;中&#x2F;高”、”小学&#x2F;初中&#x2F;高中&#x2F;大学”），那序号编码反而是对的，而且更省空间。<strong>判断标准就一句话：这个类别能不能排序？</strong></p>
+<h3 id="2-4-创造新特征：高手和新手的分水岭"><a href="#2-4-创造新特征：高手和新手的分水岭" class="headerlink" title="2.4 创造新特征：高手和新手的分水岭"></a>2.4 创造新特征：高手和新手的分水岭</h3><p>真正拉开差距的，往往是自己造出来的特征。举例：</p>
+<ul>
+<li>有”出生日期” → 造出”年龄”、”星座”、”是否周末出生”</li>
+<li>有”身高”和”体重” → 造出 BMI</li>
+<li>有”点击时间” → 造出”小时”、”是否深夜”、”距上次点击间隔”</li>
+</ul>
+<p>模型的数学能力很强，但它<strong>不具备常识</strong>。它不会自己想到”身高和体重应该结合起来看”。这活必须由你干。</p>
+<hr>
+<h2 id="三、-划分数据集：别偷看答案"><a href="#三、-划分数据集：别偷看答案" class="headerlink" title="三、 划分数据集：别偷看答案"></a>三、 划分数据集：别偷看答案</h2><h3 id="3-1-为什么要划分？"><a href="#3-1-为什么要划分？" class="headerlink" title="3.1 为什么要划分？"></a>3.1 为什么要划分？</h3><p>如果你用全部数据训练，再用同一批数据测试，模型只要把答案背下来就能拿满分——但它遇到新数据就废了。</p>
+<p>所以要分家：</p>
+<table>
+<thead>
+<tr>
+<th align="left">数据集</th>
+<th align="left">占比</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>训练集 (Train)</strong></td>
+<td align="left">60% ~ 80%</td>
+<td align="left">让模型学习</td>
+</tr>
+<tr>
+<td align="left"><strong>验证集 (Validation)</strong></td>
+<td align="left">10% ~ 20%</td>
+<td align="left">调超参数、选模型</td>
+</tr>
+<tr>
+<td align="left"><strong>测试集 (Test)</strong></td>
+<td align="left">10% ~ 20%</td>
+<td align="left">最终评估，<strong>只能看一次</strong></td>
+</tr>
+</tbody></table>
+<h3 id="3-2-测试集是”一次性”的"><a href="#3-2-测试集是”一次性”的" class="headerlink" title="3.2 测试集是”一次性”的"></a>3.2 测试集是”一次性”的</h3><p>这是很多人不理解的一点：<strong>测试集只能用来做最终评估，不能反复拿来调参。</strong></p>
+<p>因为你每根据测试集的表现调一次参数，就等于把测试集的信息”泄漏”进了模型。调个几十次，你的模型就变相把测试集也背下来了。这时候那个漂亮的准确率是假的。</p>
+<p><strong>要调参，请用验证集。</strong> 测试集留到最后，像高考一样，只考一次。</p>
+<h3 id="3-3-交叉验证：数据不够时的救命稻草"><a href="#3-3-交叉验证：数据不够时的救命稻草" class="headerlink" title="3.3 交叉验证：数据不够时的救命稻草"></a>3.3 交叉验证：数据不够时的救命稻草</h3><p>如果数据量小，划出一大块做验证太浪费，可以用 <strong>K 折交叉验证（K-Fold Cross Validation）</strong>：</p>
+<ol>
+<li>把训练集切成 K 份（常用 K&#x3D;5 或 10）</li>
+<li>每次拿 1 份当验证集，其余 K-1 份训练</li>
+<li>重复 K 次，取 K 个结果的平均值</li>
+</ol>
+<p>这样每一份数据都当过验证集，评估结果更可靠、更稳定。</p>
+<hr>
+<h2 id="四、-完整流程：第一个模型"><a href="#四、-完整流程：第一个模型" class="headerlink" title="四、 完整流程：第一个模型"></a>四、 完整流程：第一个模型</h2><p>现在把所有环节串起来，写一段真正能跑的代码。任务用经典的<strong>鸢尾花分类（Iris）</strong>——根据花瓣和萼片的尺寸，判断花的品种。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 导入工具</span></span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score, classification_report</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 加载数据</span></span><br><span class="line">X, y = load_iris(return_X_y=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 划分数据集（random_state 固定随机种子，保证结果可复现）</span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(</span><br><span class="line">    X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>, stratify=y</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 特征缩放：只在训练集上 fit，再应用到测试集</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line">X_train = scaler.fit_transform(X_train)</span><br><span class="line">X_test = scaler.transform(X_test)      <span class="comment"># 注意这里是 transform，不是 fit_transform</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 训练模型</span></span><br><span class="line">model = KNeighborsClassifier(n_neighbors=<span class="number">3</span>)</span><br><span class="line">model.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 预测与评估</span></span><br><span class="line">y_pred = model.predict(X_test)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;准确率: <span class="subst">&#123;accuracy_score(y_test, y_pred):<span class="number">.4</span>f&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(classification_report(y_test, y_pred))</span><br></pre></td></tr></table></figure>
+
+<p><strong>这段代码里有三个细节值得反复看：</strong></p>
+<ol>
+<li><strong><code>stratify=y</code></strong> —— 分层抽样，保证训练集和测试集里各类别的比例一致。类别不平衡时必加。</li>
+<li><strong><code>fit_transform</code> 和 <code>transform</code> 的区别</strong> —— 训练集可以 fit（学习均值和方差），测试集只能 transform（套用训练集的参数）。写反了就是数据泄漏。</li>
+<li><strong><code>random_state=42</code></strong> —— 固定随机种子，让别人（和未来的你）能复现出同样的结果。</li>
+</ol>
+<hr>
+<h2 id="五、-评估：别只看准确率"><a href="#五、-评估：别只看准确率" class="headerlink" title="五、 评估：别只看准确率"></a>五、 评估：别只看准确率</h2><h3 id="5-1-准确率的陷阱"><a href="#5-1-准确率的陷阱" class="headerlink" title="5.1 准确率的陷阱"></a>5.1 准确率的陷阱</h3><p>假设你要做一个”是否患病”的模型，1000 个人里只有 10 个病人。</p>
+<p>一个**什么都不学、永远回答”健康”**的废模型，准确率是多少？</p>
+<p>$$
+\frac{990}{1000} &#x3D; 99%
+$$</p>
+<p><strong>99% 的准确率，但它一个病人都查不出来。</strong> 这就是准确率（Accuracy）最大的问题——在类别不平衡时极具误导性。</p>
+<h3 id="5-2-混淆矩阵与四大指标"><a href="#5-2-混淆矩阵与四大指标" class="headerlink" title="5.2 混淆矩阵与四大指标"></a>5.2 混淆矩阵与四大指标</h3><p>把预测结果拆成四格，这才是真相：</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">预测为正</th>
+<th align="left">预测为负</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>实际为正</strong></td>
+<td align="left">TP（真阳性）</td>
+<td align="left">FN（假阴性，漏报）</td>
+</tr>
+<tr>
+<td align="left"><strong>实际为负</strong></td>
+<td align="left">FP（假阳性，误报）</td>
+<td align="left">TN（真阴性）</td>
+</tr>
+</tbody></table>
+<p>由此推出三个更有用的指标：</p>
+<p><strong>精确率（Precision）</strong> —— 你说是正的里面，有多少真的是正：</p>
+<p>$$
+Precision &#x3D; \frac{TP}{TP + FP}
+$$</p>
+<p><strong>召回率（Recall）</strong> —— 真正的正例里，你抓出来了多少：</p>
+<p>$$
+Recall &#x3D; \frac{TP}{TP + FN}
+$$</p>
+<p><strong>F1 分数</strong> —— 精确率和召回率的调和平均，两者兼顾：</p>
+<p>$$
+F1 &#x3D; \frac{2 \times Precision \times Recall}{Precision + Recall}
+$$</p>
+<h3 id="5-3-到底该看哪个？"><a href="#5-3-到底该看哪个？" class="headerlink" title="5.3 到底该看哪个？"></a>5.3 到底该看哪个？</h3><p><strong>取决于你更怕哪种错误：</strong></p>
+<ul>
+<li><strong>怕漏报（FN）</strong> → 看召回率。比如癌症筛查，宁可误报也不能漏掉病人。</li>
+<li><strong>怕误报（FP）</strong> → 看精确率。比如垃圾邮件拦截，把重要邮件扔进垃圾箱很要命。</li>
+<li><strong>两者都重要</strong> → 看 F1。</li>
+</ul>
+<hr>
+<h2 id="六、-过拟合与欠拟合：回到那个老问题"><a href="#六、-过拟合与欠拟合：回到那个老问题" class="headerlink" title="六、 过拟合与欠拟合：回到那个老问题"></a>六、 过拟合与欠拟合：回到那个老问题</h2><p>第一章我们简单提过这两个坑，现在有了评估指标，可以讲清楚怎么识别和解决。</p>
+<h3 id="6-1-怎么判断？"><a href="#6-1-怎么判断？" class="headerlink" title="6.1 怎么判断？"></a>6.1 怎么判断？</h3><p>看<strong>训练集和验证集的表现差距</strong>：</p>
+<table>
+<thead>
+<tr>
+<th align="left">现象</th>
+<th align="left">训练集表现</th>
+<th align="left">验证集表现</th>
+<th align="left">诊断</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">正常</td>
+<td align="left">好</td>
+<td align="left">好（略差）</td>
+<td align="left">✅ 健康</td>
+</tr>
+<tr>
+<td align="left"><strong>过拟合</strong></td>
+<td align="left">极好</td>
+<td align="left">差很多</td>
+<td align="left">死记硬背，没学会规律</td>
+</tr>
+<tr>
+<td align="left"><strong>欠拟合</strong></td>
+<td align="left">差</td>
+<td align="left">差</td>
+<td align="left">模型太简单，没学到东西</td>
+</tr>
+</tbody></table>
+<h3 id="6-2-怎么解决？"><a href="#6-2-怎么解决？" class="headerlink" title="6.2 怎么解决？"></a>6.2 怎么解决？</h3><p><strong>过拟合（Overfitting）</strong> —— 模型太复杂：</p>
+<ul>
+<li>增加数据量（最有效，但常常做不到）</li>
+<li><strong>正则化（Regularization）</strong>：L1 &#x2F; L2，惩罚过大的参数</li>
+<li><strong>早停法（Early Stopping）</strong>：验证集误差开始上升就停</li>
+<li>降低模型复杂度（减少层数、减少特征）</li>
+<li><strong>Dropout</strong>：神经网络里随机丢弃一部分神经元</li>
+</ul>
+<p><strong>欠拟合（Underfitting）</strong> —— 模型太简单：</p>
+<ul>
+<li>增加模型复杂度</li>
+<li>增加有意义的新特征</li>
+<li>减少正则化强度</li>
+<li>检查是不是数据本身有问题（这一条最容易被忽略）</li>
+</ul>
+<hr>
+<h2 id="七、-实战避坑清单"><a href="#七、-实战避坑清单" class="headerlink" title="七、 实战避坑清单"></a>七、 实战避坑清单</h2><p>写代码之前，把这七条过一遍，能省你很多个通宵：</p>
+<ol>
+<li><strong>先看数据，再写模型。</strong> <code>df.head()</code>、<code>df.info()</code>、<code>df.describe()</code>，三连起步。</li>
+<li><strong>划分数据集要在任何预处理之前。</strong> 顺序错了就是数据泄漏。</li>
+<li><strong>缩放参数（均值&#x2F;方差）只能从训练集算。</strong></li>
+<li><strong>类别无序用独热，有序用序号。</strong></li>
+<li><strong>测试集只碰一次。</strong> 调参用验证集或交叉验证。</li>
+<li><strong>类别不平衡时，别看准确率。</strong> 看召回率、F1 或 AUC。</li>
+<li><strong>固定随机种子。</strong> 否则你没法判断效果变化是改进带来的还是运气。</li>
+</ol>
+<hr>
+<h2 id="八、-下一步"><a href="#八、-下一步" class="headerlink" title="八、 下一步"></a>八、 下一步</h2><p>到这里，你已经走完了一个完整项目的闭环：<strong>数据 → 特征 → 划分 → 训练 → 评估 → 调优</strong>。</p>
+<p>下一步该往哪走？两条路：</p>
+<ul>
+<li><strong>想走传统机器学习</strong>：深入理解具体算法的原理。从线性回归开始，搞懂它到底在最小化什么，然后是决策树的分裂准则、SVM 的核技巧。</li>
+<li><strong>想走深度学习</strong>：先把神经网络的反向传播推一遍，再上手 PyTorch。别跳过反向传播——它是整个深度学习的发动机。</li>
+</ul>
+<p><strong>但不管走哪条路，回来把这一篇的代码自己敲一遍。</strong> 看会了和写出来，中间隔着一条河。</p>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这一篇没有炫酷的算法，全是”脏活累活”。</p>
+<p>但请相信：<strong>当你将来在某个项目上卡住，十有八九问题不在模型，而在数据。</strong> 那时候你会想起这一篇。</p>
+<p>模型会过时，算法会更迭，但对数据的敬畏心永远不会过时。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://1trhez.github.io">1TRhez.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://1trhez.github.io/2026/10/01/machine-learning-data-and-features/">https://1trhez.github.io/2026/10/01/machine-learning-data-and-features/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://1trhez.github.io" target="_blank">1TRhez.</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E7%A7%91%E6%8A%80/">科技</a><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></div><div class="post-share"><div class="social-share" data-image="/moon.ico" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/07/20/%E5%90%8D%E4%B8%8D%E6%98%BE%E6%97%B6%E5%BF%83%E4%B8%8D%E6%9C%BD/" title="名不显时心不朽"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">名不显时心不朽</div></div><div class="info-2"><div class="info-item-1">上岸查出录取通知书了    三年前初中开学的第一节语文课，老师让我们写下自己的座右铭 我翻到了唐寅的《夜读》，把一句话留了三年 很开心这一刻，为初一的自己圆了个梦 三年 名不显时心不朽，再挑灯火看文章。 </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/04/19/machine-learning-history/" title="机器学习简史：从图灵测试到通用人工智能"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-19</div><div class="info-item-2">机器学习简史：从图灵测试到通用人工智能</div></div><div class="info-2"><div class="info-item-1">机器学习简史：从图灵测试到通用人工智能如果说机器学习是现代科技的皇冠，那么它的历史就是一部跨越 70 年的波澜壮阔的史诗。从最初的逻辑推理到如今的神经网络，人类一直在试图让机器像人一样思考。  一、 萌芽期：逻辑与梦想 (1940s - 1950s)机器学习的种子在计算机科学诞生之初就已种下。  1950年：阿兰·图灵 (Alan Turing) 发表了著名的论文《计算机器与智能》，提出了著名的“图灵测试”。他问出了那个跨越时代的问题：“机器能思考吗？” 1952年：亚瑟·塞缪尔 (Arthur Samuel) 编写了一个西洋跳棋程序。这是世界上第一个具有学习能力的程序，他本人也首次提出了“Machine Learning”这一术语。   二、 第一波浪潮：感知机的兴衰 (1950s - 1970s)这是神经网络的第一次尝试。  1958年：弗兰克·罗森布拉特 (Frank Rosenblatt) 发明了感知机 (Perceptron)。这是现代神经网络的鼻祖。当时人们乐观地认为，模拟大脑神经元的结构很快就能实现人工智能。 第一次寒冬： 1969 年，马文·明斯基证明了单层感知机...</div></div></div></a><a class="pagination-related" href="/2026/04/19/machine-learning-intro/" title="机器学习深度入门：从零到一的进化之路"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-19</div><div class="info-item-2">机器学习深度入门：从零到一的进化之路</div></div><div class="info-2"><div class="info-item-1">机器学习深度入门：从零到一的进化之路欢迎来到 21 世纪最令人兴奋的技术领域之一。机器学习（Machine Learning, ML）不再是科幻小说的专利，它已经潜入你的手机翻译、推荐算法以及自动驾驶汽车的底层逻辑中。  一、 什么是机器学习？1.1 核心定义传统的编程思维是：数据 + 规则 = 结果。 而机器学习的思维是：数据 + 结果 = 规则（模型）。 简单来说，机器学习是人工智能（AI）的一个子集，旨在通过算法让计算机从大量数据中发现模式（Pattern），并利用这些模式对未知数据进行预测或决策，而无需进行显式的编程。 1.2 为什么是现在？机器学习并非新概念，其爆发得益于三大要素：  海量数据（Big Data）： 互联网积累了足够丰富的实验材料。 算力突破（Compute）： GPU 和 TPU 的普及让复杂的矩阵运算变快。 算法优化： 神经网络架构（如 Transformer）的革新。   二、 机器学习的三大核心支柱要理解机器学习，必须掌握它的“三驾马车”：监督学习、无监督学习和强化学习。 2.1 监督学习 (Supervised Learning)这是目前应用最...</div></div></div></a><a class="pagination-related" href="/2026/04/18/My-First-Blog/" title="-(持续更新)更新日志-"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-18</div><div class="info-item-2">-(持续更新)更新日志-</div></div><div class="info-2"><div class="info-item-1">— — 更 新 日 志 🛠️ — —其实是修bug日记 TvT 更新记录 (Changelog)   v1.0.3 | 2026-04-19 下午  • 架构减负：果断移除 GitHub Actions 自动化流，回归最纯粹、可控的本地手动部署模式。 • 顶栏添加：添加了顶部的几个导航栏，定位文章与页面更加快速。 • 体验优化：清理了昨晚调试留下的冗余配置文件，站点运行更加清爽。    v1.0.2 | 2026-04-19 凌晨  • 资源路径重构：彻底解决 MarkText 自动转义绝对路径导致的“图裂”问题，统一回归 /images/ 根目录逻辑。  • 渲染机制纠偏：手动将 Markdown 图片语法改为 HTML &lt;img&gt; 标签，强制锁定路径，绕过 Hexo 渲染歧义。 • SSH 端口突围：在 22 端口被封锁的绝境下，通过配置 config 文件强制 SSH 走 443 端口，成功实现加密隧道连接。 • 部署权限修复：重置 ED25519 认证密钥并完成 GitHub 身份对等验证，解决 Permission denied 报错。 • 自动化部署博弈...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/moon.ico" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">1TRhez.</div><div class="author-info-description">欢迎来到我的互联网隐秘角落 <br> 既是代码搬运工，也是异次元旁观者~</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/1TRhez"><i class="fab fa-github"></i><span>关注我的GitHub~</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/1TRhez" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=2399637029" target="_blank" title="QQ"><i class="fab fa-qq" style="color: #1296db;"></i></a><a class="social-icon" href="mailto:saa.1trhez@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="/img/wx-money.png" target="_blank" title="微信"><i class="fab fa-weixin" style="color: #119615;"></i></a><a class="social-icon" href="https://steamcommunity.com/id/saa_GG/" target="_blank" title="Steam"><i class="fab fa-steam" style="color: #171a21;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Ciallo～(∠・ω< )⌒★ <br>
+正在备战中考...🚀 <br>
+不定时更新~ 常来看看~ <br><br>
+请我喝杯咖啡？❤️<br>
+<img src="/img/wx-money.png" style="width:70%; border-radius: 8px; margin-top: 10px;">
+</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98%E5%85%A5%E9%97%A8%EF%BC%9A%E6%95%B0%E6%8D%AE%E3%80%81%E7%89%B9%E5%BE%81%E4%B8%8E%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">机器学习实战入门：数据、特征与第一个模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81-%E6%95%B0%E6%8D%AE%EF%BC%9A%E4%B8%80%E5%88%87%E7%9A%84%E4%B8%8A%E9%99%90"><span class="toc-number">1.1.</span> <span class="toc-text">一、 数据：一切的上限</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%95%B0%E6%8D%AE%E5%86%B3%E5%AE%9A%E4%BA%86%E5%A4%A9%E8%8A%B1%E6%9D%BF"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 数据决定了天花板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%A4%E7%A7%8D%E2%80%9D%E7%97%85%E2%80%9D"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 数据的两种”病”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E4%B8%80%E4%B8%AA%E5%BF%85%E9%A1%BB%E6%94%B9%E6%8E%89%E7%9A%84%E7%9B%B4%E8%A7%89"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 一个必须改掉的直觉</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A%E5%8E%9F%E6%9D%90%E6%96%99%E5%8F%98%E6%88%90%E5%A5%BD%E9%A3%9F%E6%9D%90"><span class="toc-number">1.2.</span> <span class="toc-text">二、 特征工程：把原材料变成好食材</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%BB%80%E4%B9%88%E6%98%AF%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B%EF%BC%9F"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 什么是特征工程？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%95%B0%E5%80%BC%E5%9E%8B%E7%89%B9%E5%BE%81%EF%BC%9A%E7%BC%A9%E6%94%BE%E6%98%AF%E5%88%9A%E9%9C%80"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 数值型特征：缩放是刚需</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%B1%BB%E5%88%AB%E5%9E%8B%E7%89%B9%E5%BE%81%EF%BC%9A%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E5%96%82%E6%95%B0%E5%AD%97"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 类别型特征：不能直接喂数字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%88%9B%E9%80%A0%E6%96%B0%E7%89%B9%E5%BE%81%EF%BC%9A%E9%AB%98%E6%89%8B%E5%92%8C%E6%96%B0%E6%89%8B%E7%9A%84%E5%88%86%E6%B0%B4%E5%B2%AD"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 创造新特征：高手和新手的分水岭</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81-%E5%88%92%E5%88%86%E6%95%B0%E6%8D%AE%E9%9B%86%EF%BC%9A%E5%88%AB%E5%81%B7%E7%9C%8B%E7%AD%94%E6%A1%88"><span class="toc-number">1.3.</span> <span class="toc-text">三、 划分数据集：别偷看答案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%92%E5%88%86%EF%BC%9F"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 为什么要划分？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%B5%8B%E8%AF%95%E9%9B%86%E6%98%AF%E2%80%9D%E4%B8%80%E6%AC%A1%E6%80%A7%E2%80%9D%E7%9A%84"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 测试集是”一次性”的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81%EF%BC%9A%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%A4%9F%E6%97%B6%E7%9A%84%E6%95%91%E5%91%BD%E7%A8%BB%E8%8D%89"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 交叉验证：数据不够时的救命稻草</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81-%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B%EF%BC%9A%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.</span> <span class="toc-text">四、 完整流程：第一个模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81-%E8%AF%84%E4%BC%B0%EF%BC%9A%E5%88%AB%E5%8F%AA%E7%9C%8B%E5%87%86%E7%A1%AE%E7%8E%87"><span class="toc-number">1.5.</span> <span class="toc-text">五、 评估：别只看准确率</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%87%86%E7%A1%AE%E7%8E%87%E7%9A%84%E9%99%B7%E9%98%B1"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 准确率的陷阱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%B7%B7%E6%B7%86%E7%9F%A9%E9%98%B5%E4%B8%8E%E5%9B%9B%E5%A4%A7%E6%8C%87%E6%A0%87"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 混淆矩阵与四大指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%88%B0%E5%BA%95%E8%AF%A5%E7%9C%8B%E5%93%AA%E4%B8%AA%EF%BC%9F"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 到底该看哪个？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81-%E8%BF%87%E6%8B%9F%E5%90%88%E4%B8%8E%E6%AC%A0%E6%8B%9F%E5%90%88%EF%BC%9A%E5%9B%9E%E5%88%B0%E9%82%A3%E4%B8%AA%E8%80%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.6.</span> <span class="toc-text">六、 过拟合与欠拟合：回到那个老问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%EF%BC%9F"><span class="toc-number">1.6.1.</span> <span class="toc-text">6.1 怎么判断？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3%EF%BC%9F"><span class="toc-number">1.6.2.</span> <span class="toc-text">6.2 怎么解决？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81-%E5%AE%9E%E6%88%98%E9%81%BF%E5%9D%91%E6%B8%85%E5%8D%95"><span class="toc-number">1.7.</span> <span class="toc-text">七、 实战避坑清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81-%E4%B8%8B%E4%B8%80%E6%AD%A5"><span class="toc-number">1.8.</span> <span class="toc-text">八、 下一步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">1.9.</span> <span class="toc-text">结语</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/01/machine-learning-data-and-features/" title="机器学习实战入门：数据、特征与第一个模型">机器学习实战入门：数据、特征与第一个模型</a><time datetime="2026-10-01T12:30:00.000Z" title="发表于 2026-10-01 20:30:00">2026-10-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/07/20/%E5%90%8D%E4%B8%8D%E6%98%BE%E6%97%B6%E5%BF%83%E4%B8%8D%E6%9C%BD/" title="名不显时心不朽">名不显时心不朽</a><time datetime="2026-07-20T13:30:00.000Z" title="发表于 2026-07-20 21:30:00">2026-07-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/machine-learning-history/" title="机器学习简史：从图灵测试到通用人工智能">机器学习简史：从图灵测试到通用人工智能</a><time datetime="2026-04-19T14:54:39.000Z" title="发表于 2026-04-19 22:54:39">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/machine-learning-intro/" title="机器学习深度入门：从零到一的进化之路">机器学习深度入门：从零到一的进化之路</a><time datetime="2026-04-19T04:54:39.000Z" title="发表于 2026-04-19 12:54:39">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/%E4%B8%9C%E8%8E%9E%E7%AC%AC%E4%B8%80%E4%B8%AD%E5%AD%A6%E5%BC%80%E6%94%BE%E6%97%A5%E5%8F%82%E8%A7%82%E8%AE%B0/" title="东莞第一中学开放日参观记">东莞第一中学开放日参观记</a><time datetime="2026-04-18T18:19:31.000Z" title="发表于 2026-04-19 02:19:31">2026-04-19</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 1TRhez.</span></div><div class="footer_custom_text"><div class="footer-custom-text"><a href="https://icp.gov.moe/?keyword=20268838" target="_blank">✮萌ICP备20268838号✮</a></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5-b1"></script><script src="/js/main.js?v=5.5.5-b1"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        loader: {
+          load: [
+            // Four font extension packages (optional)
+            //- '[tex]/bbm',
+            //- '[tex]/bboldx',
+            //- '[tex]/dsfont',
+            '[tex]/mhchem'
+          ],
+          paths: {
+            'mathjax-newcm': '[mathjax]/../@mathjax/mathjax-newcm-font',
+
+            //- // Four font extension packages (optional)
+            //- 'mathjax-bbm-extension': '[mathjax]/../@mathjax/mathjax-bbm-font-extension',
+            //- 'mathjax-bboldx-extension': '[mathjax]/../@mathjax/mathjax-bboldx-font-extension',
+            //- 'mathjax-dsfont-extension': '[mathjax]/../@mathjax/mathjax-dsfont-font-extension',
+            'mathjax-mhchem-extension': '[mathjax]/../@mathjax/mathjax-mhchem-font-extension'
+          }
+        },
+        output: {
+          font: 'mathjax-newcm',
+        },
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+          packages: {
+            '[+]': [
+              'mhchem'
+            ]
+          }
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          menuOptions: {
+            settings: {
+              enrich: false  // Turn off Braille and voice narration text automatic generation
+            }
+          },
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@4.1.0/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><script src="https://cdn.jsdelivr.net/gh/wallleap/cdn@latest/js/sakura.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.5-b1"></script></div></div></body></html>
