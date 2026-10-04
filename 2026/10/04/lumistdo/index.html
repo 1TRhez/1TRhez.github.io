@@ -1,0 +1,360 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>LumistDo 览明贴：一个贴着桌面的任务便签 | 1TRhez.</title><meta name="author" content="1TRhez."><meta name="copyright" content="1TRhez."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="写了个小软件，叫 LumistDo（览明贴） —— 一个常驻在桌面上的任务便签。 为什么写它起因很朴素：我想找个桌面任务清单，结果找了一圈没一个顺手的。  好用的太大太臃肿，打开它像启动了一整个工作台 轻的花里胡哨，好看的功能转手就要 VIP 开源的倒是干净，但功能太少，缺的正好都是我想要的  找烦了，索性自己写了一个。 名字LumistDo &#x3D; Luminous + List + Do">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LumistDo 览明贴：一个贴着桌面的任务便签">
+<meta property="og:url" content="https://1trhez.github.io/2026/10/04/lumistdo/index.html">
+<meta property="og:site_name" content="1TRhez.">
+<meta property="og:description" content="写了个小软件，叫 LumistDo（览明贴） —— 一个常驻在桌面上的任务便签。 为什么写它起因很朴素：我想找个桌面任务清单，结果找了一圈没一个顺手的。  好用的太大太臃肿，打开它像启动了一整个工作台 轻的花里胡哨，好看的功能转手就要 VIP 开源的倒是干净，但功能太少，缺的正好都是我想要的  找烦了，索性自己写了一个。 名字LumistDo &#x3D; Luminous + List + Do">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://1trhez.github.io/moon.ico">
+<meta property="article:published_time" content="2026-10-04T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-04T13:00:00.000Z">
+<meta property="article:author" content="1TRhez.">
+<meta property="article:tag" content="开源">
+<meta property="article:tag" content="软件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://1trhez.github.io/moon.ico"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "LumistDo 览明贴：一个贴着桌面的任务便签",
+  "url": "https://1trhez.github.io/2026/10/04/lumistdo/",
+  "image": "https://1trhez.github.io/moon.ico",
+  "datePublished": "2026-10-04T13:00:00.000Z",
+  "dateModified": "2026-10-04T13:00:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "1TRhez.",
+      "url": "https://1trhez.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/moon.ico"><link rel="canonical" href="https://1trhez.github.io/2026/10/04/lumistdo/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5-b1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'LumistDo 览明贴：一个贴着桌面的任务便签',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/moon.ico" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/neko.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/moon.ico" alt="Logo"><span class="site-name">1TRhez.</span></a><a class="nav-page-title" href="/"><span class="site-name">LumistDo 览明贴：一个贴着桌面的任务便签</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span>Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">LumistDo 览明贴：一个贴着桌面的任务便签</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-04T13:00:00.000Z" title="发表于 2026-10-04 21:00:00">2026-10-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-04T13:00:00.000Z" title="更新于 2026-10-04 21:00:00">2026-10-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>写了个小软件，叫 <strong>LumistDo（览明贴）</strong> —— 一个常驻在桌面上的任务便签。</p>
+<h2 id="为什么写它"><a href="#为什么写它" class="headerlink" title="为什么写它"></a>为什么写它</h2><p>起因很朴素：我想找个桌面任务清单，结果找了一圈没一个顺手的。</p>
+<ul>
+<li>好用的<strong>太大太臃肿</strong>，打开它像启动了一整个工作台</li>
+<li>轻的<strong>花里胡哨</strong>，好看的功能转手就要 VIP</li>
+<li>开源的倒是干净，但<strong>功能太少</strong>，缺的正好都是我想要的</li>
+</ul>
+<p>找烦了，索性自己写了一个。</p>
+<h2 id="名字"><a href="#名字" class="headerlink" title="名字"></a>名字</h2><p><strong>LumistDo &#x3D; Luminous + List + Do</strong>，取「清晰可见的执行清单」的意思。</p>
+<p>本来是想叫「某某 ToDo」的，围绕 ToDo 想了半天，发现无论怎么拼都有一堆重名的。索性放弃这条路，重新换了个思路起名。</p>
+<h2 id="长这样"><a href="#长这样" class="headerlink" title="长这样"></a>长这样</h2><img src="https://raw.githubusercontent.com/1TRhez/LumistDo/main/docs/img/main.png" width="340">
+
+<p>半透明的圆角卡片，边缘是羽化的，跟桌面背景之间没有硬邦邦的一条边。</p>
+<p>上面是任务列表，左边一个空心圆点，点一下就算做完了。底部收着「已完成」，右边那个齿轮是设置。</p>
+<h2 id="我最想要的其实是「存在感弱」"><a href="#我最想要的其实是「存在感弱」" class="headerlink" title="我最想要的其实是「存在感弱」"></a>我最想要的其实是「存在感弱」</h2><p>同类软件基本都有<strong>置顶</strong>，但很少有<strong>置底</strong>。</p>
+<p>我不是想要一个”随时提醒我”的清单，我想要的是一个<strong>不影响我工作</strong>的清单 —— 像一张随手便利贴，贴在壁纸上面，跟背景几乎融为一体。</p>
+<p>所以做了这几件事：</p>
+<p><strong>置底 + 固定位置。</strong> 让它沉在最底层，不去跟别的窗口抢位置。再配上可调的透明度，以及毛玻璃效果，<strong>哪怕是置顶状态也完全不挡信息</strong> —— 半透明能透出后面的内容，边缘又是柔的。</p>
+<p><strong>位置模式的快捷键。</strong> 平时它老实待在底层。桌面窗口一多、想快速扫一眼清单的时候，一个快捷键就能把它按出来，看完再按回去。不用去托盘里翻，也不用先点到它。</p>
+<p><strong>缩略模式。</strong> 顶栏整块渐隐，屏幕上只剩任务文字；鼠标贴到顶部，图标才露出来。</p>
+<p><strong>窗口层级三态</strong>：普通 &#x2F; 最上层 &#x2F; 最底层一键循环，另有「固定位置」防误拖。</p>
+<p><strong>划掉的任务不消失。</strong> 点圆点之后收到底部的「已完成」栏，手滑点错了点一下就能还原。</p>
+<p><strong>按住就能拖动排序。</strong> 想到什么先写下来，回头再一次性理顺序。</p>
+<h2 id="顺手的地方"><a href="#顺手的地方" class="headerlink" title="顺手的地方"></a>顺手的地方</h2><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>点 <code>+</code> &#x2F; <code>Ctrl+N</code></td>
+<td>新建一条，光标自动落在输入框</td>
+</tr>
+<tr>
+<td>双击任务文字</td>
+<td>就地编辑，回车或点别处保存，<code>Esc</code> 取消</td>
+</tr>
+<tr>
+<td>点任务左边的圆点</td>
+<td>标记完成，任务移到「已完成」栏</td>
+</tr>
+<tr>
+<td>按住任务上下拖</td>
+<td>调整顺序</td>
+</tr>
+<tr>
+<td>右键任务行</td>
+<td>编辑 &#x2F; 删除</td>
+</tr>
+<tr>
+<td><code>Ctrl+Alt+1 / 2 / 3</code></td>
+<td>切换层级、固定位置、缩略模式</td>
+</tr>
+</tbody></table>
+<p>那三个快捷键是注册成<strong>系统级热键</strong>的，所以在别的程序里打字也能触发 —— 想让它出现就出现，不用先去找窗口。</p>
+<p>配色有六套预设（深空 &#x2F; 暖夜 &#x2F; 毛玻璃 &#x2F; 海洋 &#x2F; 薰衣草 &#x2F; 素白），不喜欢的话背景色和字体色也能单独挑。界面中英双语。</p>
+<h2 id="关于「轻」"><a href="#关于「轻」" class="headerlink" title="关于「轻」"></a>关于「轻」</h2><p>这大概是它最让我满意的地方：</p>
+<ul>
+<li>一个进程、一个 <strong>1.9 MB</strong> 的 exe</li>
+<li>不联网、没有数据库、没有后台服务和更新检查</li>
+<li>常驻内存几十 MB，之后基本不动</li>
+<li>数据就是两个 JSON 文件：<code>%APPDATA%\LumistDo\settings.json</code> 和 <code>tasks.json</code>，纯文本，想备份直接复制走</li>
+</ul>
+<p>卸载走「设置 → 应用 → 已安装的应用」，卸载的时候它才会问你要不要连数据一起删掉。</p>
+<h2 id="中间砍掉和改掉的东西"><a href="#中间砍掉和改掉的东西" class="headerlink" title="中间砍掉和改掉的东西"></a>中间砍掉和改掉的东西</h2><p>有一半时间不是在写功能，是在跟自己先前的主意打架。记几个。</p>
+<h3 id="自动隐藏：做出来了，然后砍了"><a href="#自动隐藏：做出来了，然后砍了" class="headerlink" title="自动隐藏：做出来了，然后砍了"></a>自动隐藏：做出来了，然后砍了</h3><p>最初有个功能：鼠标焦点不在软件上时，它自动半透明隐藏，挺像那么回事。</p>
+<p>但判断逻辑很难写对，而且<strong>经常隐藏了就永久不显示了</strong> —— 想把它叫出来，连设置都打不开。修了几轮发现这事从根上就不对：我要这个任务清单，本来就是为了看它，<strong>我把它藏起来是图什么</strong>。</p>
+<p>于是整个功能砍掉，需求换成<strong>用快捷键切换窗口位置</strong> —— 想扫一眼按一下就行，比自动隐藏可控得多。</p>
+<p>顺带为了以绝后患（万一以后还有修不掉的 bug），在设置里加了个<strong>一键重置</strong>按钮 —— 点一下恢复默认设置。</p>
+<h3 id="置顶和置底会打架"><a href="#置顶和置底会打架" class="headerlink" title="置顶和置底会打架"></a>置顶和置底会打架</h3><p>这两个东西逻辑上是冲突的，一开始没注意，后来发现它们会互相卡出 bug。</p>
+<p>最后改成：<strong>每种窗口模式只能单独存在</strong>，选了置底就不能同时置顶，状态互斥。</p>
+<h3 id="毛玻璃和圆角是天生矛盾的"><a href="#毛玻璃和圆角是天生矛盾的" class="headerlink" title="毛玻璃和圆角是天生矛盾的"></a>毛玻璃和圆角是天生矛盾的</h3><p>Windows 的毛玻璃效果<strong>做不出圆角和边缘羽化</strong> —— 系统给你的是个方框，而这个软件的界面是圆润的卡片，两者一叠加，方框的直角就会硬生生露在外面。</p>
+<p>最后是用<strong>巧妙的藏色手法</strong>把这个方框毛玻璃隐进圆角界面里的：让方框边缘的颜色跟它背后融到一起，视觉上就”没有”那个直角了。</p>
+<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>到 <a target="_blank" rel="noopener" href="https://github.com/1TRhez/LumistDo/releases">Releases</a> 或者源码仓库 <a target="_blank" rel="noopener" href="https://github.com/1TRhez/LumistDo">1TRhez&#x2F;LumistDo</a> 下载 <code>LumistDo-Setup-v1.3.2.exe</code>（31 MB，Windows 10 &#x2F; 11）。</p>
+<p>最新这版（v1.3.2）加了<strong>自选安装位置</strong>：默认装在 <code>%LOCALAPPDATA%\Programs\LumistDo</code>，全程不弹 UAC；想装到 <code>C:\Program Files</code> 这种地方，在安装向导第一页选「为所有用户安装」就行。</p>
+<p>想直接跑源码也可以，Python 3.13 + PySide6：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br><span class="line">python main.py</span><br></pre></td></tr></table></figure>
+
+<h2 id="已知的不足"><a href="#已知的不足" class="headerlink" title="已知的不足"></a>已知的不足</h2><ul>
+<li><strong>安装包没有代码签名</strong>，第一次运行 Windows SmartScreen 会拦一下，点「更多信息」→「仍要运行」就行</li>
+<li><strong>数据只存本机</strong>，没有云同步。换电脑要手动搬那两个 JSON</li>
+<li>快捷键是<strong>独占</strong>注册的：如果系统里已经有别的程序占用了 <code>Ctrl+Alt+1/2/3</code>，在这里就得改绑</li>
+</ul>
+<p>项目是 MIT 协议的，代码在 <a target="_blank" rel="noopener" href="https://github.com/1TRhez/LumistDo">GitHub</a>，喜欢的点个star谢谢啦⭐~如果有问题或者想法欢迎提 Issue❤️</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://1trhez.github.io">1TRhez.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://1trhez.github.io/2026/10/04/lumistdo/">https://1trhez.github.io/2026/10/04/lumistdo/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://1trhez.github.io" target="_blank">1TRhez.</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BD%AF%E4%BB%B6/">软件</a><a class="post-meta__tags" href="/tags/%E5%BC%80%E6%BA%90/">开源</a></div><div class="post-share"><div class="social-share" data-image="/moon.ico" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/07/20/%E5%90%8D%E4%B8%8D%E6%98%BE%E6%97%B6%E5%BF%83%E4%B8%8D%E6%9C%BD/" title="名不显时心不朽"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">名不显时心不朽</div></div><div class="info-2"><div class="info-item-1">上岸查出录取通知书了    三年前初中开学的第一节语文课，老师让我们写下自己的座右铭 我翻到了唐寅的《夜读》，把一句话留了三年 很开心这一刻，为初一的自己圆了个梦 三年 名不显时心不朽，再挑灯火看文章。 </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/moon.ico" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">1TRhez.</div><div class="author-info-description">欢迎来到我的互联网隐秘角落 <br> 既是代码搬运工，也是异次元旁观者~</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/1TRhez"><i class="fab fa-github"></i><span>关注我的GitHub~</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/1TRhez" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=2399637029" target="_blank" title="QQ"><i class="fab fa-qq" style="color: #1296db;"></i></a><a class="social-icon" href="mailto:saa.1trhez@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="/img/wx-money.png" target="_blank" title="微信"><i class="fab fa-weixin" style="color: #119615;"></i></a><a class="social-icon" href="https://steamcommunity.com/id/saa_GG/" target="_blank" title="Steam"><i class="fab fa-steam" style="color: #171a21;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Ciallo～(∠・ω< )⌒★ <br>
+不定时更新~ 常来看看~ <br><br>
+请我喝杯咖啡？❤️<br>
+<img src="/img/wx-money.png" style="width:70%; border-radius: 8px; margin-top: 10px;">
+</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%86%99%E5%AE%83"><span class="toc-number">1.</span> <span class="toc-text">为什么写它</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8D%E5%AD%97"><span class="toc-number">2.</span> <span class="toc-text">名字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%95%BF%E8%BF%99%E6%A0%B7"><span class="toc-number">3.</span> <span class="toc-text">长这样</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E6%9C%80%E6%83%B3%E8%A6%81%E7%9A%84%E5%85%B6%E5%AE%9E%E6%98%AF%E3%80%8C%E5%AD%98%E5%9C%A8%E6%84%9F%E5%BC%B1%E3%80%8D"><span class="toc-number">4.</span> <span class="toc-text">我最想要的其实是「存在感弱」</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%BA%E6%89%8B%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-number">5.</span> <span class="toc-text">顺手的地方</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E3%80%8C%E8%BD%BB%E3%80%8D"><span class="toc-number">6.</span> <span class="toc-text">关于「轻」</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E9%97%B4%E7%A0%8D%E6%8E%89%E5%92%8C%E6%94%B9%E6%8E%89%E7%9A%84%E4%B8%9C%E8%A5%BF"><span class="toc-number">7.</span> <span class="toc-text">中间砍掉和改掉的东西</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E9%9A%90%E8%97%8F%EF%BC%9A%E5%81%9A%E5%87%BA%E6%9D%A5%E4%BA%86%EF%BC%8C%E7%84%B6%E5%90%8E%E7%A0%8D%E4%BA%86"><span class="toc-number">7.1.</span> <span class="toc-text">自动隐藏：做出来了，然后砍了</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%AE%E9%A1%B6%E5%92%8C%E7%BD%AE%E5%BA%95%E4%BC%9A%E6%89%93%E6%9E%B6"><span class="toc-number">7.2.</span> <span class="toc-text">置顶和置底会打架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AF%9B%E7%8E%BB%E7%92%83%E5%92%8C%E5%9C%86%E8%A7%92%E6%98%AF%E5%A4%A9%E7%94%9F%E7%9F%9B%E7%9B%BE%E7%9A%84"><span class="toc-number">7.3.</span> <span class="toc-text">毛玻璃和圆角是天生矛盾的</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD"><span class="toc-number">8.</span> <span class="toc-text">下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%B2%E7%9F%A5%E7%9A%84%E4%B8%8D%E8%B6%B3"><span class="toc-number">9.</span> <span class="toc-text">已知的不足</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/04/lumistdo/" title="LumistDo 览明贴：一个贴着桌面的任务便签">LumistDo 览明贴：一个贴着桌面的任务便签</a><time datetime="2026-10-04T13:00:00.000Z" title="发表于 2026-10-04 21:00:00">2026-10-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/07/20/%E5%90%8D%E4%B8%8D%E6%98%BE%E6%97%B6%E5%BF%83%E4%B8%8D%E6%9C%BD/" title="名不显时心不朽">名不显时心不朽</a><time datetime="2026-07-20T13:30:00.000Z" title="发表于 2026-07-20 21:30:00">2026-07-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/03/machine-learning-data-and-features/" title="机器学习实战入门：数据、特征与第一个模型">机器学习实战入门：数据、特征与第一个模型</a><time datetime="2026-05-03T12:30:00.000Z" title="发表于 2026-05-03 20:30:00">2026-05-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/machine-learning-history/" title="机器学习简史：从图灵测试到通用人工智能">机器学习简史：从图灵测试到通用人工智能</a><time datetime="2026-04-19T14:54:39.000Z" title="发表于 2026-04-19 22:54:39">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/machine-learning-intro/" title="机器学习深度入门：从零到一的进化之路">机器学习深度入门：从零到一的进化之路</a><time datetime="2026-04-19T04:54:39.000Z" title="发表于 2026-04-19 12:54:39">2026-04-19</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 1TRhez.</span></div><div class="footer_custom_text"><div class="footer-custom-text"><a href="https://icp.gov.moe/?keyword=20268838" target="_blank">✮萌ICP备20268838号✮</a></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5-b1"></script><script src="/js/main.js?v=5.5.5-b1"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        loader: {
+          load: [
+            // Four font extension packages (optional)
+            //- '[tex]/bbm',
+            //- '[tex]/bboldx',
+            //- '[tex]/dsfont',
+            '[tex]/mhchem'
+          ],
+          paths: {
+            'mathjax-newcm': '[mathjax]/../@mathjax/mathjax-newcm-font',
+
+            //- // Four font extension packages (optional)
+            //- 'mathjax-bbm-extension': '[mathjax]/../@mathjax/mathjax-bbm-font-extension',
+            //- 'mathjax-bboldx-extension': '[mathjax]/../@mathjax/mathjax-bboldx-font-extension',
+            //- 'mathjax-dsfont-extension': '[mathjax]/../@mathjax/mathjax-dsfont-font-extension',
+            'mathjax-mhchem-extension': '[mathjax]/../@mathjax/mathjax-mhchem-font-extension'
+          }
+        },
+        output: {
+          font: 'mathjax-newcm',
+        },
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+          packages: {
+            '[+]': [
+              'mhchem'
+            ]
+          }
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          menuOptions: {
+            settings: {
+              enrich: false  // Turn off Braille and voice narration text automatic generation
+            }
+          },
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@4.1.0/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><script src="https://cdn.jsdelivr.net/gh/wallleap/cdn@latest/js/sakura.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.5-b1"></script></div></div></body></html>
