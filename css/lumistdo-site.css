@@ -227,7 +227,7 @@ body.lumi {
   justify-content: center;
 }
 
-/* 截图后面的光斑 */
+/* 仿真窗周边的光斑 */
 .lumi-hero-shot::before {
   content: '';
   position: absolute;
@@ -238,16 +238,117 @@ body.lumi {
   z-index: 0;
 }
 
-.lumi-hero-shot img {
+/* 「壁纸」层：给仿真窗背后铺一块带拱形纹路、被模糊过的底
+   —— 毛玻璃要透出点背后的东西才像真的。z-index 0，被 z-index 1 的窗口压住，
+   但仍在 .lumi-hero-shot::before(也 0，DOM 更靠前) 之上。 */
+.lumi-hero-shot::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  width: 372px;
+  height: 560px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 26px;
+  background-color: #0d1420;
+  background-image:
+    radial-gradient(circle at 22% 26%, rgba(233, 195, 139, .5), transparent 42%),
+    radial-gradient(circle at 78% 68%, rgba(122, 188, 235, .42), transparent 46%),
+    repeating-linear-gradient(112deg, rgba(255, 255, 255, .05) 0 2px, transparent 2px 62px),
+    repeating-linear-gradient(22deg, rgba(255, 255, 255, .04) 0 2px, transparent 2px 78px);
+  filter: blur(20px) saturate(118%);
+}
+
+/* ---------- 用 CSS 仿的软件界面（Hero 右侧） ----------
+   大小对齐软件默认窗口 320×375：320 的 1.25 倍，
+   所以字号、间距都按「真机尺寸 × 1.25」来写。 */
+.lumi-mock {
   position: relative;
   z-index: 1;
-  width: 430px;
+  width: 400px;
   max-width: 100%;
-  height: auto;
-  /* 截图自己带圆角，不要再叠一层 border-radius */
-  border-radius: 0;
-  box-shadow: 0 26px 60px rgba(0, 0, 0, .55);
+  padding: 10px 0 8px;
+  border-radius: 17px;
+  background: linear-gradient(155deg, rgba(41, 51, 68, .74), rgba(15, 20, 29, .82));
+  border: 1px solid rgba(255, 255, 255, .16);
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+  box-shadow:
+    0 26px 60px rgba(0, 0, 0, .55),
+    inset 0 1px 0 rgba(255, 255, 255, .1);
+  font-size: 14px;
 }
+
+.lumi-mock-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 17px 9px;
+}
+
+.lumi-mock-logo {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .19em;
+  color: rgba(230, 235, 245, .62);
+}
+
+.lumi-mock-bar-icons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 13px;
+  color: rgba(230, 235, 245, .58);
+}
+
+.lumi-mock-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, .07);
+}
+
+.lumi-mock-list li {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 8.5px 17px;
+  border-bottom: 1px solid rgba(255, 255, 255, .055);
+  color: #e9eef8;
+}
+
+/* 空心的完成圆点 */
+.lumi-mock-dot {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  border: 1.4px solid rgba(255, 255, 255, .42);
+  border-radius: 50%;
+}
+
+/* 最后一条故意画淡，暗示「可以一直往下加」 */
+.lumi-mock-ghost { color: rgba(233, 238, 248, .34); }
+.lumi-mock-ghost .lumi-mock-dot { border-color: rgba(255, 255, 255, .2); }
+
+.lumi-mock-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 17px 0;
+  font-size: 12.5px;
+  color: rgba(230, 235, 245, .45);
+}
+
+.lumi-mock-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lumi-mock-done b { font-weight: 600; }
+
+.lumi-mock-foot .fa-gear { font-size: 13.5px; }
 
 /* Hero 标题旁的软件图标 */
 .lumi-hero-icon {
