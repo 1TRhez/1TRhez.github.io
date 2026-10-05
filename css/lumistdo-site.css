@@ -44,7 +44,7 @@ body.lumi {
 
 .lumi-wrap {
   width: 100%;
-  max-width: 1080px;
+  max-width: 1150px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -137,9 +137,11 @@ body.lumi {
 
 .lumi-hero-inner {
   display: grid;
+  /* 左边文案占大头，右侧仿真窗贴住容器右缘。
+     刻意不让窗口在列里居中——一居中，窗口和文案之间就会空出一大块。 */
   grid-template-columns: 1.15fr .85fr;
   align-items: center;
-  gap: 56px;
+  gap: 44px;
 }
 
 .lumi-eyebrow {
@@ -224,7 +226,8 @@ body.lumi {
 .lumi-hero-shot {
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  min-height: 430px;
 }
 
 /* 仿真窗周边的光斑 */
@@ -240,13 +243,14 @@ body.lumi {
 
 /* 「壁纸」层：给仿真窗背后铺一块带拱形纹路、被模糊过的底
    —— 毛玻璃要透出点背后的东西才像真的。z-index 0，被 z-index 1 的窗口压住，
-   但仍在 .lumi-hero-shot::before(也 0，DOM 更靠前) 之上。 */
+   但仍在 .lumi-hero-shot::before(也 0，DOM 更靠前) 之上。
+   整体比窗口大一圈，露出一点模糊边缘，像桌面透过来的光。 */
 .lumi-hero-shot::after {
   content: '';
   position: absolute;
   z-index: 0;
-  width: 372px;
-  height: 560px;
+  width: 352px;
+  height: 412px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -261,15 +265,15 @@ body.lumi {
 }
 
 /* ---------- 用 CSS 仿的软件界面（Hero 右侧） ----------
-   大小对齐软件默认窗口 320×375：320 的 1.25 倍，
-   所以字号、间距都按「真机尺寸 × 1.25」来写。 */
+   大小对齐软件默认窗口 320×375：320 的 1.06 倍，
+   所以字号、间距都按「真机尺寸 × 1.06」来写。 */
 .lumi-mock {
   position: relative;
   z-index: 1;
-  width: 400px;
+  width: 340px;
   max-width: 100%;
-  padding: 10px 0 8px;
-  border-radius: 17px;
+  padding: 9px 0 7px;
+  border-radius: 15px;
   background: linear-gradient(155deg, rgba(41, 51, 68, .74), rgba(15, 20, 29, .82));
   border: 1px solid rgba(255, 255, 255, .16);
   backdrop-filter: blur(18px) saturate(135%);
@@ -277,28 +281,28 @@ body.lumi {
   box-shadow:
     0 26px 60px rgba(0, 0, 0, .55),
     inset 0 1px 0 rgba(255, 255, 255, .1);
-  font-size: 14px;
+  font-size: 13.5px;
 }
 
 .lumi-mock-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 17px 9px;
+  padding: 0 14px 8px;
 }
 
 .lumi-mock-logo {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: .19em;
+  letter-spacing: .17em;
   color: rgba(230, 235, 245, .62);
 }
 
 .lumi-mock-bar-icons {
   display: flex;
   align-items: center;
-  gap: 15px;
-  font-size: 13px;
+  gap: 13px;
+  font-size: 12.5px;
   color: rgba(230, 235, 245, .58);
 }
 
@@ -312,8 +316,8 @@ body.lumi {
 .lumi-mock-list li {
   display: flex;
   align-items: center;
-  gap: 13px;
-  padding: 8.5px 17px;
+  gap: 11px;
+  padding: 8px 14px;
   border-bottom: 1px solid rgba(255, 255, 255, .055);
   color: #e9eef8;
 }
@@ -321,8 +325,8 @@ body.lumi {
 /* 空心的完成圆点 */
 .lumi-mock-dot {
   flex: none;
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
   border: 1.4px solid rgba(255, 255, 255, .42);
   border-radius: 50%;
 }
@@ -335,8 +339,8 @@ body.lumi {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 9px 17px 0;
-  font-size: 12.5px;
+  padding: 8px 14px 0;
+  font-size: 12px;
   color: rgba(230, 235, 245, .45);
 }
 
@@ -348,7 +352,7 @@ body.lumi {
 
 .lumi-mock-done b { font-weight: 600; }
 
-.lumi-mock-foot .fa-gear { font-size: 13.5px; }
+.lumi-mock-foot .fa-gear { font-size: 13px; }
 
 /* Hero 标题旁的软件图标 */
 .lumi-hero-icon {
@@ -679,7 +683,7 @@ body.lumi {
 /* ---------- 响应式 ---------- */
 @media (max-width: 900px) {
   .lumi-hero-inner { grid-template-columns: 1fr; gap: 40px; }
-  .lumi-hero-shot { order: -1; }
+  .lumi-hero-shot { order: -1; justify-content: center; min-height: 0; }
   .lumi-shot-row,
   .lumi-shot-row-2 { grid-template-columns: 1fr; }
 }
