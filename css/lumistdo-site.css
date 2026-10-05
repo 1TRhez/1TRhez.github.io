@@ -1,0 +1,601 @@
+/* ============================================================
+   LumistDo 官网式介绍页样式
+   只在 layout/project-lumistdo.pug 这一个页面上被加载，
+   所有选择器都以 .lumi 打头，不会影响博客其他页面。
+
+   视觉方向：深色 + 蓝紫渐变 + 毛玻璃，呼应软件本身的「与壁纸融为一体」。
+   ============================================================ */
+
+:root {
+  --lumi-bg: #0a0d14;
+  --lumi-bg-2: #0f131d;
+  --lumi-surface: rgba(255, 255, 255, .04);
+  --lumi-surface-2: rgba(255, 255, 255, .07);
+  --lumi-line: rgba(255, 255, 255, .1);
+  --lumi-text: #e6ebf5;
+  --lumi-dim: #97a3b8;
+  --lumi-accent: #5aa9f7;
+  --lumi-accent-2: #9d7bf5;
+  --lumi-radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body.lumi {
+  margin: 0;
+  padding: 0;
+  background: var(--lumi-bg);
+  color: var(--lumi-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  /* 两团光晕，制造深空感 */
+  background-image:
+    radial-gradient(900px 620px at 12% -8%, rgba(90, 169, 247, .18), transparent 60%),
+    radial-gradient(760px 560px at 88% 4%, rgba(157, 123, 245, .15), transparent 62%);
+  background-attachment: fixed;
+}
+
+.lumi a { color: inherit; text-decoration: none; }
+
+.lumi-wrap {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.lumi-wrap.lumi-narrow { max-width: 760px; }
+
+.lumi img { max-width: 100%; height: auto; display: block; }
+
+/* ---------- 顶部导航 ---------- */
+.lumi-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: rgba(10, 13, 20, .72);
+  border-bottom: 1px solid var(--lumi-line);
+}
+
+.lumi-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 62px;
+}
+
+.lumi-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.lumi-brand-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--lumi-accent), var(--lumi-accent-2));
+  box-shadow: 0 0 14px rgba(90, 169, 247, .8);
+}
+
+.lumi-brand-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .14), 0 4px 12px rgba(0, 0, 0, .5);
+}
+
+.lumi-brand-name { font-size: .95rem; }
+
+.lumi-brand-sub {
+  font-size: .78rem;
+  font-weight: 400;
+  color: var(--lumi-dim);
+  letter-spacing: 0;
+}
+
+.lumi-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  font-size: .9rem;
+  color: var(--lumi-dim);
+}
+
+.lumi-nav-links a { transition: color .2s ease; }
+.lumi-nav-links a:hover { color: var(--lumi-text); }
+
+.lumi-nav-blog {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid var(--lumi-line);
+  border-radius: 999px;
+  color: var(--lumi-text) !important;
+  background: var(--lumi-surface);
+  transition: border-color .2s ease, background .2s ease;
+}
+
+.lumi-nav-blog:hover {
+  border-color: rgba(90, 169, 247, .55);
+  background: var(--lumi-surface-2);
+}
+
+/* ---------- 主视觉 ---------- */
+.lumi-hero { padding: 74px 0 60px; }
+
+.lumi-hero-inner {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  align-items: center;
+  gap: 56px;
+}
+
+.lumi-eyebrow {
+  margin: 0 0 14px;
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--lumi-accent);
+}
+
+.lumi-hero .lumi-eyebrow {
+  display: inline-block;
+  padding: 5px 12px;
+  border: 1px solid rgba(90, 169, 247, .3);
+  border-radius: 999px;
+  letter-spacing: .1em;
+}
+
+.lumi-h1 {
+  margin: 0 0 20px;
+  font-size: clamp(2.1rem, 5.2vw, 3.3rem);
+  line-height: 1.22;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+
+.lumi-lead {
+  margin: 0 0 30px;
+  font-size: 1.04rem;
+  color: var(--lumi-dim);
+  max-width: 34em;
+}
+
+.lumi-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.lumi-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--lumi-line);
+  background: var(--lumi-surface);
+  font-size: .92rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: transform .18s ease, background .18s ease, border-color .18s ease;
+}
+
+.lumi-btn:hover { background: var(--lumi-surface-2); transform: translateY(-1px); }
+
+.lumi-btn-primary {
+  border-color: transparent;
+  color: #08111d;
+  background: linear-gradient(135deg, #6fb6ff, #8f7bf7);
+  box-shadow: 0 8px 26px rgba(90, 169, 247, .28);
+}
+
+.lumi-btn-primary:hover {
+  background: linear-gradient(135deg, #7fbeff, #9d8bff);
+  box-shadow: 0 12px 32px rgba(90, 169, 247, .38);
+}
+
+.lumi-btn-note {
+  font-size: .76rem;
+  font-weight: 500;
+  opacity: .7;
+}
+
+.lumi-hero-meta {
+  margin: 18px 0 0;
+  font-size: .84rem;
+  color: var(--lumi-dim);
+}
+
+.lumi-hero-shot {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+/* 截图后面的光斑 */
+.lumi-hero-shot::before {
+  content: '';
+  position: absolute;
+  inset: 8% -10% 8% -10%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(90, 169, 247, .3), transparent 70%);
+  filter: blur(46px);
+  z-index: 0;
+}
+
+.lumi-hero-shot img {
+  position: relative;
+  z-index: 1;
+  width: 430px;
+  max-width: 100%;
+  height: auto;
+  /* 截图自己带圆角，不要再叠一层 border-radius */
+  border-radius: 0;
+  box-shadow: 0 26px 60px rgba(0, 0, 0, .55);
+}
+
+/* Hero 标题旁的软件图标 */
+.lumi-hero-icon {
+  display: block;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .16), 0 10px 26px rgba(0, 0, 0, .55);
+  margin-bottom: 16px;
+}
+
+/* ---------- 「掰开揉碎」详情 ---------- */
+.lumi-details {
+  margin-top: 22px;
+  border: 1px solid var(--lumi-line);
+  border-radius: var(--lumi-radius);
+  background: var(--lumi-surface);
+  padding: 4px 22px;
+}
+
+.lumi-details > summary {
+  cursor: pointer;
+  padding: 16px 0;
+  font-weight: 600;
+  color: var(--lumi-text);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lumi-details > summary::-webkit-details-marker { display: none; }
+
+.lumi-details > summary::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--lumi-accent), var(--lumi-accent-2));
+}
+
+.lumi-details > summary::after {
+  content: '展开';
+  margin-left: auto;
+  font-size: .78rem;
+  font-weight: 400;
+  color: var(--lumi-dim);
+}
+
+.lumi-details[open] > summary::after { content: '收起'; }
+
+.lumi-notes { display: grid; gap: 18px; padding-bottom: 20px; }
+
+/* ---------- 四个卖点横条 ---------- */
+.lumi-strip {
+  border-top: 1px solid var(--lumi-line);
+  border-bottom: 1px solid var(--lumi-line);
+  background: rgba(255, 255, 255, .02);
+}
+
+.lumi-strip-inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+}
+
+.lumi-strip-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 22px 4px;
+  text-align: center;
+}
+
+.lumi-strip-item strong {
+  font-size: 1.05rem;
+  background: linear-gradient(135deg, #7fbeff, #a48bff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lumi-strip-item span { font-size: .84rem; color: var(--lumi-dim); }
+
+/* ---------- 通用区块 ---------- */
+.lumi-section { padding: 78px 0; }
+
+.lumi-section-alt {
+  background: linear-gradient(180deg, rgba(255, 255, 255, .022), transparent);
+  border-top: 1px solid var(--lumi-line);
+  border-bottom: 1px solid var(--lumi-line);
+}
+
+.lumi-h2 {
+  margin: 0 0 14px;
+  font-size: clamp(1.5rem, 3.4vw, 2.05rem);
+  line-height: 1.3;
+  font-weight: 750;
+  letter-spacing: -.01em;
+}
+
+.lumi-section-lead {
+  margin: 0 0 42px;
+  max-width: 44em;
+  color: var(--lumi-dim);
+}
+
+/* ---------- 功能网格 ---------- */
+.lumi-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(272px, 1fr));
+  gap: 18px;
+}
+
+.lumi-feature {
+  padding: 24px 22px;
+  border: 1px solid var(--lumi-line);
+  border-radius: var(--lumi-radius);
+  background: var(--lumi-surface);
+  transition: border-color .22s ease, transform .22s ease, background .22s ease;
+}
+
+.lumi-feature:hover {
+  border-color: rgba(90, 169, 247, .45);
+  background: var(--lumi-surface-2);
+  transform: translateY(-3px);
+}
+
+.lumi-feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 14px;
+  border-radius: 11px;
+  font-size: 1rem;
+  color: #cfe4ff;
+  background: linear-gradient(135deg, rgba(90, 169, 247, .3), rgba(157, 123, 245, .3));
+  border: 1px solid rgba(90, 169, 247, .28);
+}
+
+.lumi-feature h3 { margin: 0 0 8px; font-size: 1.02rem; }
+
+.lumi-feature p {
+  margin: 0;
+  font-size: .9rem;
+  color: var(--lumi-dim);
+  line-height: 1.75;
+}
+
+/* ---------- 截图卡片 ---------- */
+.lumi-shot-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.lumi-shot-row-2 {
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 20px;
+}
+
+.lumi-shot-card {
+  margin: 0;
+  border: 1px solid var(--lumi-line);
+  border-radius: var(--lumi-radius);
+  background: var(--lumi-surface);
+  overflow: hidden;
+}
+
+.lumi-shot-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 26px 20px;
+  /* 固定高度，让同一行卡片的说明文字对齐，不会被高低不一的截图拽歪 */
+  height: 350px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 20%, rgba(90, 169, 247, .16), transparent 68%);
+}
+
+.lumi-shot-img img {
+  /* 真机截图自带桌面毛玻璃底，四角已经是圆角，这里不能再切圆角，否则底会露出来 */
+  border-radius: 0;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .45);
+  max-height: 100%;
+  width: auto;
+}
+
+.lumi-shot-card figcaption {
+  padding: 14px 18px 16px;
+  border-top: 1px solid var(--lumi-line);
+}
+
+.lumi-shot-card figcaption strong { display: block; font-size: .95rem; }
+
+.lumi-shot-card figcaption span {
+  font-size: .84rem;
+  color: var(--lumi-dim);
+}
+
+/* ---------- 配色预设 ---------- */
+.lumi-presets {
+  border: 1px solid var(--lumi-line);
+  border-radius: var(--lumi-radius);
+  overflow: hidden;
+  background: rgba(255, 255, 255, .03);
+}
+
+.lumi-presets img { width: 100%; }
+
+/* ---------- 安装步骤 ---------- */
+.lumi-steps {
+  list-style: none;
+  margin: 0 0 34px;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.lumi-steps li {
+  display: flex;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid var(--lumi-line);
+  border-radius: var(--lumi-radius);
+  background: var(--lumi-surface);
+}
+
+.lumi-step-n {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: .86rem;
+  font-weight: 700;
+  color: #08111d;
+  background: linear-gradient(135deg, #6fb6ff, #8f7bf7);
+}
+
+.lumi-step-body strong { display: block; margin-bottom: 3px; }
+
+.lumi-step-body p {
+  margin: 0;
+  font-size: .88rem;
+  color: var(--lumi-dim);
+}
+
+.lumi-download-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px 24px;
+  border: 1px solid rgba(90, 169, 247, .3);
+  border-radius: var(--lumi-radius);
+  background: linear-gradient(135deg, rgba(90, 169, 247, .12), rgba(157, 123, 245, .1));
+}
+
+.lumi-download-info { display: flex; flex-direction: column; }
+.lumi-download-info strong { font-size: 1.1rem; }
+.lumi-download-info span { font-size: .86rem; color: var(--lumi-dim); }
+
+/* ---------- 说明 ---------- */
+.lumi-notes { display: grid; gap: 18px; }
+
+.lumi-note {
+  padding: 20px 22px;
+  border-left: 3px solid rgba(157, 123, 245, .65);
+  border-radius: 0 12px 12px 0;
+  background: var(--lumi-surface);
+}
+
+.lumi-note h3 { margin: 0 0 6px; font-size: 1rem; }
+
+.lumi-note p {
+  margin: 0;
+  font-size: .9rem;
+  color: var(--lumi-dim);
+  line-height: 1.78;
+}
+
+/* ---------- 页脚 ---------- */
+.lumi-footer {
+  border-top: 1px solid var(--lumi-line);
+  background: var(--lumi-bg-2);
+  padding: 42px 0 36px;
+}
+
+.lumi-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.lumi-footer-left { display: flex; flex-direction: column; }
+.lumi-footer-left strong { font-size: 1rem; }
+.lumi-footer-left span { font-size: .86rem; color: var(--lumi-dim); }
+
+.lumi-footer-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-size: .88rem;
+  color: var(--lumi-dim);
+}
+
+.lumi-footer-right a { display: inline-flex; align-items: center; gap: 7px; }
+.lumi-footer-right a:hover { color: var(--lumi-text); }
+
+.lumi-footer-note {
+  width: 100%;
+  margin: 26px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--lumi-line);
+  font-size: .8rem;
+  color: rgba(151, 163, 184, .7);
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 900px) {
+  .lumi-hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .lumi-hero-shot { order: -1; }
+  .lumi-shot-row,
+  .lumi-shot-row-2 { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .lumi-wrap { padding: 0 18px; }
+  .lumi-hero { padding: 46px 0 40px; }
+  .lumi-section { padding: 56px 0; }
+
+  /* 手机上导航只留品牌和返回，其余链接折成一行小字 */
+  .lumi-nav-links { gap: 14px; font-size: .84rem; }
+  .lumi-nav-links a:not(.lumi-nav-blog) { display: none; }
+  .lumi-brand-sub { display: none; }
+
+  .lumi-strip-inner { grid-template-columns: repeat(2, 1fr); }
+
+  .lumi-btn { flex: 1 1 auto; justify-content: center; }
+
+  .lumi-download-card { flex-direction: column; align-items: stretch; }
+}
