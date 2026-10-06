@@ -1684,3 +1684,41 @@ kbd {
   .card, .view-panel, .table-scroll { border-color: #ccc; box-shadow: none; }
   .will-reveal { opacity: 1 !important; transform: none !important; }
 }
+
+/* ---------- 24. 页脚内测公告（由博客侧添加） ---------- */
+.footer__beta {
+  margin-top: 46px;
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--warn);
+  border-radius: var(--radius-sm);
+  background: var(--warn-soft);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.footer__beta-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-top: 8px;
+  border-radius: 50%;
+  background: var(--warn);
+  box-shadow: 0 0 0 4px rgba(189, 135, 80, .18);
+}
+.footer__beta-body { flex: 1 1 260px; }
+.footer__beta-title {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-0);
+}
+.footer__beta-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+.footer__beta-text strong { color: var(--text-1); font-weight: 600; }
