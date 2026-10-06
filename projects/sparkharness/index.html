@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" data-motion="full">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>破晓 Spark Harness — 把多家大模型当成一支团队来用的桌面工作台</title>
+<meta name="description" content="破晓 Spark Harness 是 Windows x64 桌面 AI 工作台：一家界面接入多家模型，混元让 4 成员 + 1 验收模型协同出终稿，论衡用你自己的任务做多模型对抗评测，内置视觉模型训练闭环。本地优先，数据与密钥都在你自己的电脑上。">
+<meta name="theme-color" content="#090a0c">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- 阅读进度 -->
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<!-- ===================== 顶部导航 ===================== -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="brand" href="#top" aria-label="破晓 Spark Harness 首页">
+      <span class="brand__seal" aria-hidden="true">破</span>
+      <span class="brand__text">
+        <span class="brand__cn">破晓 Spark Harness</span>
+        <span class="brand__en">SPARK HARNESS</span>
+      </span>
+    </a>
+
+    <nav class="nav__links" aria-label="页面导航">
+      <a class="nav__link" href="#why">为什么</a>
+      <a class="nav__link" href="#shots">界面实拍</a>
+      <a class="nav__link" href="#views">七大视图</a>
+      <a class="nav__link" href="#council">混元</a>
+      <a class="nav__link" href="#arena">论衡</a>
+      <a class="nav__link" href="#compare">对比</a>
+      <a class="nav__link" href="#plugins">插件</a>
+      <a class="nav__link" href="#privacy">数据</a>
+      <a class="nav__link" href="#install">安装</a>
+    </nav>
+
+    <div class="nav__actions">
+      <a class="nav__link" href="/projects/" title="回到博客的项目列表" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;margin-right:4px;border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-2);font-size:13.5px;white-space:nowrap;text-decoration:none;">← 返回博客</a>
+      <button class="icon-btn" id="motionToggle" type="button" title="界面动效：始终播放（默认）" aria-label="切换界面动效">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path d="M3 12h3.5l2-5 3 10 2.5-7 1.7 4H21"/>
+        </svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" title="切换玄夜 / 宣纸配色" aria-label="切换配色方案">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"/>
+        </svg>
+      </button>
+      <a class="btn btn--primary" href="#install">获取</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ===================== 首屏 ===================== -->
+<section class="hero" id="hero">
+  <div class="hero__bg" aria-hidden="true">
+    <div class="hero__grid"></div>
+    <div class="hero__wash hero__wash--a"></div>
+    <div class="hero__wash hero__wash--b"></div>
+    <div class="hero__glow" id="heroGlow"></div>
+  </div>
+
+  <div class="wrap hero__inner">
+    <div class="hero__copy">
+      <span class="eyebrow">Windows x64 桌面应用 · 版本 1.0.0</span>
+
+      <h1 class="hero__title">
+        <span class="line"><span class="accent">把多家大模型</span></span>
+        <span class="line">当成一支<span class="ink">团队</span>来用</span>
+      </h1>
+      <p class="hero__latin">Local-first multi-model AI workbench</p>
+
+      <p class="hero__lead">
+        模型在这里不只是聊天：它可以读写你的文件、执行命令、调用
+        <strong>54 个插件工具</strong>；你可以让
+        <strong>4 个成员模型 + 1 个独立验收模型</strong>协同完成同一个任务；
+        也可以用「论衡」让多个模型同题竞技、按维度打分，用你自己的真实任务决定该用哪个模型。
+        所有会话、密钥与统计都在你自己的电脑上。
+      </p>
+
+      <div class="hero__cta">
+        <a class="btn btn--primary btn--lg" href="#views">看看它能做什么</a>
+        <a class="btn btn--ghost btn--lg" href="#compare">与主流方案逐项对比</a>
+      </div>
+
+      <div class="hero__meta">
+        <span class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 10h16"/></svg>
+          18 家内置提供方
+        </span>
+        <span class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v18M5 8l7-5 7 5v8l-7 5-7-5z"/></svg>
+          5 种协议
+        </span>
+        <span class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+          数据不出本机
+        </span>
+        <span class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l8 4v6c0 4-3.4 6.8-8 8-4.6-1.2-8-4-8-8V7z"/></svg>
+          权限分级 + 审批
+        </span>
+      </div>
+    </div>
+
+    <!-- 应用界面示意（会动：时间线见 js/main.js §12。纯示意，不是可操作的真软件） -->
+    <div class="mock" id="heroMock" data-mock>
+      <div class="mock__bar">
+        <span class="mock__dot"></span>
+        <span class="mock__dot"></span>
+        <span class="mock__dot"></span>
+        <span class="mock__title">破晓 Spark Harness — 对话</span>
+        <span class="mock__tag">界面示意</span>
+        <button class="mock__ctrl" type="button" data-mock-toggle aria-label="暂停或继续界面动画">
+          <svg viewBox="0 0 24 24" aria-hidden="true" data-mock-icon="pause">
+            <path d="M9 5v14M15 5v14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          </svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true" data-mock-icon="play" hidden>
+            <path d="M8 5.5l10 6.5-10 6.5z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+      <div class="mock__body">
+        <div class="mock__side" aria-hidden="true">
+          <div class="mock__label">会话</div>
+          <div class="mock__item is-short" data-mock-side="0"></div>
+          <div class="mock__item is-mid" data-mock-side="1"></div>
+          <div class="mock__item is-accent" data-mock-side="2"></div>
+          <div class="mock__item is-short" data-mock-side="3"></div>
+          <div class="mock__item is-mid" data-mock-side="4"></div>
+          <div class="mock__item is-short" data-mock-side="5"></div>
+        </div>
+        <div class="mock__main" aria-hidden="true">
+          <div class="mock__msg is-user" data-mock-msg="user">读一下 src/renderer 的动效实现，把结论写进 docs。</div>
+          <div class="mock__msg is-think" data-mock-msg="think">我先定位动画引擎与样式表，再逐条核对。</div>
+          <div class="mock__tool" data-mock-tool="0">
+            <span class="tick"></span>
+            glob &nbsp;src/renderer/src/lib/*.ts &nbsp;·&nbsp; 3 个命中
+          </div>
+          <div class="mock__tool" data-mock-tool="1">
+            <span class="spin"></span>
+            read &nbsp;src/renderer/src/lib/slide.ts
+          </div>
+          <div class="mock__msg is-final" data-mock-msg="final"
+            >侧栏与右栏由 <code class="mock__code">slide.ts</code> 逐帧驱动，CSS 里已无对应 transition<span class="mock__caret"></span></div>
+        </div>
+        <div class="mock__aside" aria-hidden="true">
+          <div class="mock__label">运行</div>
+          <div class="mock__item is-accent" data-mock-aside="0"></div>
+          <div class="mock__item is-mid" data-mock-aside="1"></div>
+          <div class="mock__item is-short" data-mock-aside="2"></div>
+          <div class="mock__label mock__label--gap">待确认</div>
+          <div class="mock__item is-mid" data-mock-aside="3"></div>
+          <div class="mock__item is-short" data-mock-aside="4"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 关键数字 -->
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat__num">7<small>个</small></div>
+        <div class="stat__label">一级视图，一条链闭环</div>
+        <div class="stat__note">对话 · 混元 · 论衡 · 训练 · 扩展 · 设置 · 统计</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">54<small>个</small></div>
+        <div class="stat__label">插件工具按需启停</div>
+        <div class="stat__note">共注册 55 个插件（1 个无工具）</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">5<small>+1</small></div>
+        <div class="stat__label">混元角色：成员 4 + 验收 1</div>
+        <div class="stat__note">另含协同轮与失败隔离</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">0<small>字节</small></div>
+        <div class="stat__label">非你配置的服务收到数据</div>
+        <div class="stat__note">SQLite + 本地文件，不依赖账号</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 界面实拍 ===================== -->
+<section class="section section--tight" id="shots">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">界面实拍</span>
+      <h2 class="section-title">都是真机跑出来的画面，不是画的</h2>
+      <p class="section-desc">下面每一张都来自 Windows x64 打包版的实际运行窗口：界面、工具调用卡片、评分排名、用量统计都是应用自己渲染的。对话内容是为了演示编的，界面本身没有做任何修补。左右拖动可以横着翻，点任意一张可以放大看原图。</p>
+    </div>
+  </div>
+
+  <div class="rail-shell" data-reveal>
+    <div class="rail" id="shotRail" tabindex="0" role="group" aria-label="界面实拍，可横向滚动">
+      <figure class="rail__item">
+        <div class="rail__frame" role="button" tabindex="0" data-shot="img/shot-02-chat-plan.jpg" data-shot-title="对话 · 分步计划" aria-label="放大查看：对话 · 分步计划"><img src="img/shot-02-chat-plan.jpg" width="1440" height="920" loading="lazy" decoding="async" alt="对话视图，模型把重构任务拆成四步，每步都带验收条件"></div>
+        <figcaption><b>对话 · 分步计划</b>一句「拆成几步，每步都要能验收」，模型给出四步，每步都自带验收条件。</figcaption>
+      </figure>
+      <figure class="rail__item">
+        <div class="rail__frame" role="button" tabindex="0" data-shot="img/shot-03-chat-code.jpg" data-shot-title="对话 · 工作区" aria-label="放大查看：对话 · 工作区"><img src="img/shot-03-chat-code.jpg" width="1440" height="920" loading="lazy" decoding="async" alt="对话视图，左侧会话列表与右侧文件/计划/改动/运行页签"></div>
+        <figcaption><b>对话 · 工作区</b>左边是会话语料，右边是文件、计划、改动、运行四个页签。</figcaption>
+      </figure>
+      <figure class="rail__item">
+        <div class="rail__frame" role="button" tabindex="0" data-shot="img/shot-05-arena.jpg" data-shot-title="论衡 · 综合排名" aria-label="放大查看：论衡 · 综合排名"><img src="img/shot-05-arena.jpg" width="1440" height="920" loading="lazy" decoding="async" alt="论衡视图，同一问题三个模型作答，右侧综合排名与作答卡"></div>
+        <figcaption><b>论衡 · 综合排名</b>同一个问题发给三个模型，按正确性、完整性、可执行性、简洁度打分排名。</figcaption>
+      </figure>
+      <figure class="rail__item">
+        <div class="rail__frame" role="button" tabindex="0" data-shot="img/shot-04-council.jpg" data-shot-title="混元 · 成员协作" aria-label="放大查看：混元 · 成员协作"><img src="img/shot-04-council.jpg" width="1440" height="920" loading="lazy" decoding="async" alt="混元视图，四个成员模型各自独立会话，加一个独立验收模型"></div>
+        <figcaption><b>混元 · 成员协作</b>每个成员模型一条独立会话，再加一个只负责审产出、纠偏、收敛的验收模型。</figcaption>
+      </figure>
+      <figure class="rail__item">
+        <div class="rail__frame" role="button" tabindex="0" data-shot="img/shot-06-plugins.jpg" data-shot-title="扩展 · 工具目录" aria-label="放大查看：扩展 · 工具目录"><img src="img/shot-06-plugins.jpg" width="1440" height="920" loading="lazy" decoding="async" alt="扩展视图，54 个工具按分类列出，每个可单独启停"></div>
+        <figcaption><b>扩展 · 工具目录</b>54 个工具按文件、计算、检索、视觉等分类列出，逐个启停。</figcaption>
+      </figure>
+      <figure class="rail__item">
+        <div class="rail__frame" role="button" tabindex="0" data-shot="img/shot-07-stats.jpg" data-shot-title="统计 · 用量与费用" aria-label="放大查看：统计 · 用量与费用"><img src="img/shot-07-stats.jpg" width="1440" height="920" loading="lazy" decoding="async" alt="统计视图，token 与费用按会话汇总"></div>
+        <figcaption><b>统计 · 用量与费用</b>token 与费用按时间维度记着，成本花在哪一眼看得见。</figcaption>
+      </figure>
+      <figure class="rail__item">
+        <div class="rail__frame" role="button" tabindex="0" data-shot="img/shot-08-settings.jpg" data-shot-title="设置 · 模型与权限" aria-label="放大查看：设置 · 模型与权限"><img src="img/shot-08-settings.jpg" width="1440" height="920" loading="lazy" decoding="async" alt="设置视图，模型厂商、默认模型、权限与安全"></div>
+        <figcaption><b>设置 · 模型与权限</b>厂商、默认模型、权限分级与命令黑白名单都在这两层里。</figcaption>
+      </figure>
+      <figure class="rail__item">
+        <div class="rail__frame" role="button" tabindex="0" data-shot="img/shot-09-training.jpg" data-shot-title="训练 · 数据集到导出" aria-label="放大查看：训练 · 数据集到导出"><img src="img/shot-09-training.jpg" width="1440" height="920" loading="lazy" decoding="async" alt="训练视图，数据集、参数配置、评估与导出"></div>
+        <figcaption><b>训练 · 数据集到导出</b>数据集、参数、评估、导出串成一条本地闭环。</figcaption>
+      </figure>
+    </div>
+
+    <div class="rail-nav">
+      <button class="rail-btn" type="button" data-rail-prev aria-label="上一组截图">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="rail-track" aria-hidden="true"><i data-rail-bar></i></div>
+      <button class="rail-btn" type="button" data-rail-next aria-label="下一组截图">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="rail-hint">拖动 / 滚轮 / ← →</span>
+    </div>
+  </div>
+
+  <!-- 点任意一张截图后弹出的放大层。放在 .rail-shell 外面，别让它继承入场动画的 transform -->
+  <dialog class="lightbox" id="lightbox" data-lb-zoom="fit" aria-label="放大查看截图">
+    <div class="lightbox__inner" data-lb-inner>
+      <div class="lightbox__bar">
+        <b class="lightbox__title" data-lb-title></b>
+        <div class="lightbox__tools">
+          <button class="lightbox__zoom" type="button" data-lb-zoom-toggle aria-label="按原尺寸查看">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span data-lb-zoom-label>100%</span>
+          </button>
+          <button class="lightbox__nav" type="button" data-lb-prev aria-label="上一张">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <span class="lightbox__counter" data-lb-counter></span>
+          <button class="lightbox__nav" type="button" data-lb-next aria-label="下一张">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <button class="lightbox__close" type="button" data-lb-close aria-label="关闭放大视图">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <figure class="lightbox__stage" data-lb-stage>
+        <img data-lb-img src="" alt="">
+      </figure>
+      <p class="lightbox__hint">适应窗口 ↔ 原尺寸（Z 键）· ← → 翻页 · Esc 关闭</p>
+    </div>
+  </dialog>
+</section>
+
+<!-- ===================== 痛点 → 做法 ===================== -->
+<section class="section section--alt" id="why">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">它要解决什么</span>
+      <h2 class="section-title">工作里的九个真实麻烦</h2>
+      <p class="section-desc">
+        这些问题不是「AI 不够聪明」，而是工具的形状不对。下面每一条都是具体的、可验证的做法差异。
+      </p>
+    </div>
+
+    <div class="vs">
+      <div class="vs__card" data-reveal>
+        <div class="vs__pain">各家模型各有所长，却要在多个网站与客户端之间来回切换、手工复制粘贴。</div>
+        <div class="vs__arrow"></div>
+        <div class="vs__fix">一个界面内接入并<b>混合调度</b>多家模型与任意自定义 API。</div>
+      </div>
+      <div class="vs__card" data-reveal>
+        <div class="vs__pain">重要问题只问一个模型，怕它漏、怕它错，只能自己反复追问。</div>
+        <div class="vs__arrow"></div>
+        <div class="vs__fix"><b>混元</b>：多个成员独立作答，独立验收模型收敛出终稿。</div>
+      </div>
+      <div class="vs__card" data-reveal>
+        <div class="vs__pain">多模型输出混在一起，历史记录一团乱，最后还得手工整理。</div>
+        <div class="vs__arrow"></div>
+        <div class="vs__fix">协作记录有<b>独立会话区与独立记录存放区</b>，与主对话物理隔离。</div>
+      </div>
+      <div class="vs__card" data-reveal>
+        <div class="vs__pain">选模型靠感觉、靠排行榜，别人的评测和自己的任务不是一回事。</div>
+        <div class="vs__arrow"></div>
+        <div class="vs__fix"><b>论衡</b>：用你自己的真实任务做同题对抗评测，看维度打分与排名。</div>
+      </div>
+      <div class="vs__card" data-reveal>
+        <div class="vs__pain">数据敏感，不想把代码、合同、病历传到云端；本地小模型又不够用。</div>
+        <div class="vs__arrow"></div>
+        <div class="vs__fix"><b>本地优先</b>：数据落在本机；云端模型可用，但由你决定给谁看。</div>
+      </div>
+      <div class="vs__card" data-reveal>
+        <div class="vs__pain">想让模型真正动手改文件、跑命令，聊天窗口做不到。</div>
+        <div class="vs__arrow"></div>
+        <div class="vs__fix">桌面 Agent：文件读写 + 命令执行 + 插件工具，带<b>权限分级与审批</b>。</div>
+      </div>
+      <div class="vs__card" data-reveal>
+        <div class="vs__pain">训练或微调要另搭一套环境：装 Python、写脚本、自己配目录。</div>
+        <div class="vs__arrow"></div>
+        <div class="vs__fix">内置训练页：数据集 → 训练任务 → 实时日志 → <b>权重导出</b>一条链。</div>
+      </div>
+      <div class="vs__card" data-reveal>
+        <div class="vs__pain">订阅制按席位计费，成本不透明，不知道钱花在哪。</div>
+        <div class="vs__arrow"></div>
+        <div class="vs__fix">程序内置<b>用量与费用统计</b>；成本只取决于你自己接入的厂商。</div>
+      </div>
+      <div class="vs__card" data-reveal>
+        <div class="vs__pain">换了电脑就要重新配置，工具链锁在某个账号或某台机器上。</div>
+        <div class="vs__arrow"></div>
+        <div class="vs__fix"><b>便携可移植</b>：便携版可整体拷到任意目录或 U 盘运行。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 七大视图 ===================== -->
+<section class="section" id="views">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">功能全貌</span>
+      <h2 class="section-title">七个视图，覆盖<br>用模型、选模型、训模型</h2>
+      <p class="section-desc">
+        顶部导航七项，可用 <kbd>Ctrl</kbd>+<kbd>1</kbd> ~ <kbd>Ctrl</kbd>+<kbd>7</kbd> 直达。点左侧任一项查看该视图的能力清单。
+      </p>
+    </div>
+
+    <div class="views">
+      <!-- 标签 -->
+      <div class="view-tabs" role="tablist" aria-label="七大视图">
+        <button class="view-tab is-active" role="tab" data-view="chat" aria-selected="true">
+          <span class="view-tab__idx" aria-hidden="true">1</span>
+          <span class="view-tab__text">
+            <span class="view-tab__name">对话</span>
+            <span class="view-tab__en">Dialogue</span>
+          </span>
+          <span class="view-tab__key">Ctrl+1</span>
+        </button>
+        <button class="view-tab" role="tab" data-view="council" aria-selected="false">
+          <span class="view-tab__idx" aria-hidden="true">2</span>
+          <span class="view-tab__text">
+            <span class="view-tab__name">混元</span>
+            <span class="view-tab__en">Council</span>
+          </span>
+          <span class="view-tab__key">Ctrl+2</span>
+        </button>
+        <button class="view-tab" role="tab" data-view="arena" aria-selected="false">
+          <span class="view-tab__idx" aria-hidden="true">3</span>
+          <span class="view-tab__text">
+            <span class="view-tab__name">论衡</span>
+            <span class="view-tab__en">Arena</span>
+          </span>
+          <span class="view-tab__key">Ctrl+3</span>
+        </button>
+        <button class="view-tab" role="tab" data-view="training" aria-selected="false">
+          <span class="view-tab__idx" aria-hidden="true">4</span>
+          <span class="view-tab__text">
+            <span class="view-tab__name">训练</span>
+            <span class="view-tab__en">Forge</span>
+          </span>
+          <span class="view-tab__key">Ctrl+4</span>
+        </button>
+        <button class="view-tab" role="tab" data-view="plugins" aria-selected="false">
+          <span class="view-tab__idx" aria-hidden="true">5</span>
+          <span class="view-tab__text">
+            <span class="view-tab__name">扩展</span>
+            <span class="view-tab__en">Tools</span>
+          </span>
+          <span class="view-tab__key">Ctrl+5</span>
+        </button>
+        <button class="view-tab" role="tab" data-view="settings" aria-selected="false">
+          <span class="view-tab__idx" aria-hidden="true">6</span>
+          <span class="view-tab__text">
+            <span class="view-tab__name">设置</span>
+            <span class="view-tab__en">Settings</span>
+          </span>
+          <span class="view-tab__key">Ctrl+6</span>
+        </button>
+        <button class="view-tab" role="tab" data-view="stats" aria-selected="false">
+          <span class="view-tab__idx" aria-hidden="true">7</span>
+          <span class="view-tab__text">
+            <span class="view-tab__name">统计</span>
+            <span class="view-tab__en">Stats</span>
+          </span>
+          <span class="view-tab__key">Ctrl+7</span>
+        </button>
+      </div>
+
+      <!-- 面板 -->
+      <div class="view-panel">
+        <div class="view-panel__body" id="viewBody"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 混元 ===================== -->
+<section class="section section--alt" id="council">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">核心差异一</span>
+      <h2 class="section-title">混元：不是「多开几个模型」，是有角色的协作</h2>
+      <p class="section-desc">
+        多数聚合工具的多模型是「并排各答一份」，最终仍要你自己读、自己判断、自己合并。
+        混元把这件事做成了角色分工：成员并行处理，另有 <strong>1 个独立验收模型</strong>
+        只负责审阅产出、纠正冲突、收敛出一份终稿 —— 它不占成员名额，也不是简单的多数表决。
+      </p>
+    </div>
+
+    <div class="council" data-reveal>
+      <div class="council__members">
+        <div class="member">
+          <span class="member__no">1</span>
+          <span class="member__body">
+            <span class="member__name">成员模型 A</span>
+            <span class="member__sub">独立会话 · 独立上下文 · 可用工具</span>
+          </span>
+          <span class="member__state state--ok">已完成</span>
+        </div>
+        <div class="member">
+          <span class="member__no">2</span>
+          <span class="member__body">
+            <span class="member__name">成员模型 B</span>
+            <span class="member__sub">独立会话 · 独立上下文 · 可用工具</span>
+          </span>
+          <span class="member__state state--ok">已完成</span>
+        </div>
+        <div class="member">
+          <span class="member__no">3</span>
+          <span class="member__body">
+            <span class="member__name">成员模型 C</span>
+            <span class="member__sub">独立会话 · 独立上下文 · 可用工具</span>
+          </span>
+          <span class="member__state state--run">执行中</span>
+        </div>
+        <div class="member">
+          <span class="member__no">4</span>
+          <span class="member__body">
+            <span class="member__name">成员模型 D</span>
+            <span class="member__sub">失败被隔离，原因记录并标出</span>
+          </span>
+          <span class="member__state state--fail">已降级</span>
+        </div>
+      </div>
+
+      <div class="council__flow" aria-hidden="true"><span>并行 → 收敛</span></div>
+
+      <div class="council__verifier">
+        <h4>验收模型</h4>
+        <span class="tag">独立的第 5 个槽位</span>
+        <p>只审阅成员产出，不只做多数表决：指出遗漏与错误，权衡后给出终稿。</p>
+        <ul>
+          <li>单个成员失败不会拖垮整组</li>
+          <li>只用成功成员的产出出终稿</li>
+          <li>验收模型不可用时自动回退到可用模型</li>
+          <li>可选「协同轮」：把彼此产出喂回再做一轮改进</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quote" data-reveal>
+      <b>记录隔离：</b>混元拥有自己的会话列表与记录存放区，普通对话侧栏会过滤掉混元会话。
+      多模型协作产生的几十条中间产出，不会污染你日常的对话历史。混元参数（成员步数、成员重试、验收步数、验收重试、协同轮）
+      也<b>不会</b>修改普通对话的步数与重试设置。
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 论衡 ===================== -->
+<section class="section" id="arena">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">核心差异二</span>
+      <h2 class="section-title">论衡：用你自己的任务，决定该用哪个模型</h2>
+      <p class="section-desc">
+        同题多答 → 裁判按维度打分 → 对抗轮互相批判 → 给出排名与融合结论。
+        默认评估维度为正确性、完整性、可执行性、简洁度，可直接用于模型选型、方案评审，
+        或对比同一模型在不同提示词下的表现。
+      </p>
+    </div>
+
+    <div class="scoreboard">
+      <div data-reveal>
+        <div class="axes" data-axes>
+          <div class="axis">
+            <div class="axis__head">
+              <span class="axis__name">正确性</span>
+              <span class="axis__val">92 / 100</span>
+            </div>
+            <div class="axis__track"><div class="axis__fill" data-fill="92"></div></div>
+          </div>
+          <div class="axis">
+            <div class="axis__head">
+              <span class="axis__name">完整性</span>
+              <span class="axis__val">86 / 100</span>
+            </div>
+            <div class="axis__track"><div class="axis__fill" data-fill="86"></div></div>
+          </div>
+          <div class="axis">
+            <div class="axis__head">
+              <span class="axis__name">可执行性</span>
+              <span class="axis__val">78 / 100</span>
+            </div>
+            <div class="axis__track"><div class="axis__fill" data-fill="78"></div></div>
+          </div>
+          <div class="axis">
+            <div class="axis__head">
+              <span class="axis__name">简洁度</span>
+              <span class="axis__val">64 / 100</span>
+            </div>
+            <div class="axis__track"><div class="axis__fill" data-fill="64"></div></div>
+          </div>
+        </div>
+        <div class="quote" style="margin-top:26px">
+          上图是打分维度的示意。真实分数来自你自己的任务与裁判模型，不存在「官方榜单」这回事 ——
+          这也是它的意义：<b>你的场景只有你自己的数据能回答</b>。
+        </div>
+      </div>
+
+      <div data-reveal>
+        <div class="rank">
+          <div class="rank__row is-top">
+            <span class="rank__pos">1</span>
+            <span class="rank__name">成员模型 B</span>
+            <span class="rank__score"><b>84.5</b> 分</span>
+          </div>
+          <div class="rank__row">
+            <span class="rank__pos">2</span>
+            <span class="rank__name">成员模型 A</span>
+            <span class="rank__score">81.2 分</span>
+          </div>
+          <div class="rank__row">
+            <span class="rank__pos">3</span>
+            <span class="rank__name">成员模型 D</span>
+            <span class="rank__score">76.8 分</span>
+          </div>
+          <div class="rank__row">
+            <span class="rank__pos">4</span>
+            <span class="rank__name">成员模型 C</span>
+            <span class="rank__score">71.4 分</span>
+          </div>
+        </div>
+        <div class="quote" style="margin-top:26px">
+          <b>对抗轮做什么：</b>让参战模型互相批判并改进自己的答案，再重新打分。
+          一轮对抗往往比单纯「多问一遍」更能暴露问题，代价是多一次 token 消耗。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 对比表 ===================== -->
+<section class="section section--alt" id="compare">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">与主流方案对比</span>
+      <h2 class="section-title">按架构性事实对比，不做「谁更好」的笼统结论</h2>
+      <p class="section-desc">
+        市面上的 AI 产品大致分四类：云端 AI 客户端、AI 编程 IDE、模型聚合客户端、本地模型运行器。
+        下表按可验证的产品形态与架构特征逐项对照。
+      </p>
+    </div>
+
+    <div class="table-scroll" data-reveal>
+      <table class="compare">
+        <thead>
+          <tr>
+            <th scope="col">维度</th>
+            <th scope="col">云端 AI 客户端<br><span style="font-weight:400;color:var(--text-3)">ChatGPT / Claude / Gemini</span></th>
+            <th scope="col">AI 编程 IDE<br><span style="font-weight:400;color:var(--text-3)">Cursor / Windsurf / Copilot</span></th>
+            <th scope="col">模型聚合客户端<br><span style="font-weight:400;color:var(--text-3)">各类多模型聊天前端</span></th>
+            <th scope="col">本地模型运行器<br><span style="font-weight:400;color:var(--text-3)">Ollama / LM Studio</span></th>
+            <th scope="col" class="col-us">破晓 Spark Harness</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">模型来源</th>
+            <td>单一厂商</td>
+            <td>以少数合作为主</td>
+            <td>多厂商</td>
+            <td>本地模型为主</td>
+            <td class="col-us">多厂商 + 任意自定义 API，跨协议混用</td>
+          </tr>
+          <tr>
+            <th scope="row">运行位置</th>
+            <td>云端为主</td>
+            <td>云端为主，插件在本地</td>
+            <td>本地壳 + 云端模型</td>
+            <td>本地</td>
+            <td class="col-us">本地优先，数据在本机</td>
+          </tr>
+          <tr>
+            <th scope="row">数据去向</th>
+            <td>上传厂商服务器</td>
+            <td>上传厂商服务器</td>
+            <td>取决于转发服务</td>
+            <td>不出本机</td>
+            <td class="col-us">仅发往你自己配置的模型服务</td>
+          </tr>
+          <tr>
+            <th scope="row">文件 / 命令工具链</th>
+            <td>通常无，或很受限</td>
+            <td>有，深度绑定编辑器</td>
+            <td>多数无</td>
+            <td>通常无</td>
+            <td class="col-us">有，且带权限分级与审批</td>
+          </tr>
+          <tr>
+            <th scope="row">多模型协同</th>
+            <td>无</td>
+            <td>通常为单模型切换</td>
+            <td>多为并排显示各自回答</td>
+            <td>无</td>
+            <td class="col-us">4 成员 + 1 独立验收模型，含失败隔离与降级</td>
+          </tr>
+          <tr>
+            <th scope="row">记录隔离</th>
+            <td>单一会话流</td>
+            <td>单一会话流</td>
+            <td>多模型输出易混流</td>
+            <td>单一会话流</td>
+            <td class="col-us">协作与主对话双会话区、双记录区</td>
+          </tr>
+          <tr>
+            <th scope="row">模型对比评测</th>
+            <td>无</td>
+            <td>无</td>
+            <td>少数有并排对比</td>
+            <td>无</td>
+            <td class="col-us">打分 + 排名 + 对抗轮</td>
+          </tr>
+          <tr>
+            <th scope="row">本地模型训练</th>
+            <td>无</td>
+            <td>无</td>
+            <td>无</td>
+            <td>仅推理，训练需另配</td>
+            <td class="col-us">内置训练闭环，可导出权重</td>
+          </tr>
+          <tr>
+            <th scope="row">成本结构</th>
+            <td>订阅制</td>
+            <td>订阅制，按席位</td>
+            <td>视转发服务而定</td>
+            <td>本地算力成本</td>
+            <td class="col-us">程序内用量与费用统计，成本取决于你接入的厂商</td>
+          </tr>
+          <tr>
+            <th scope="row">可移植性</th>
+            <td>账号绑定</td>
+            <td>账号绑定</td>
+            <td>视产品而定</td>
+            <td>视产品而定</td>
+            <td class="col-us">便携版可整体拷贝到任意目录 / U 盘</td>
+          </tr>
+          <tr>
+            <th scope="row">界面语言</th>
+            <td>通用风格</td>
+            <td>通用风格</td>
+            <td>通用风格</td>
+            <td>通用风格</td>
+            <td class="col-us">东方水墨取向（玄夜 / 宣纸），可调动效与无障碍</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="quote" data-reveal>
+      竞品对比基于公开的产品形态与架构特征，采用类别化描述，<b>不针对任何具体产品做评测结论</b>。
+      表格里的每一行都是可自行验证的结构差异，而不是主观优劣判断。
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 插件 ===================== -->
+<section class="section" id="plugins">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">扩展</span>
+      <h2 class="section-title">54 个插件工具，按需启停</h2>
+      <p class="section-desc">
+        插件为模型增加工具能力：文件与代码、联网检索、计算与数据处理、智能体协作、模型能力、视觉训练、系统与偏好。
+        点左侧分类查看该类下的具体工具。
+      </p>
+    </div>
+
+    <div class="plugins">
+      <div class="plugin-cats" id="pluginCats" role="tablist" aria-label="插件分类"></div>
+      <div>
+        <div class="plugin-count">
+          <b id="pluginCount">0</b>
+          <span id="pluginCountLabel">个工具</span>
+        </div>
+        <div class="plugin-tools" id="pluginTools"></div>
+      </div>
+    </div>
+
+    <div class="quote" data-reveal>
+      插件体系共注册 <b>55 个插件</b>，其中 <b>54 个暴露工具</b>（另 1 个负责自动重试，不带工具）。
+      默认开启策略是「除危险级外全部可用」，危险级插件需要你显式打开。
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 训练 ===================== -->
+<section class="section section--alt" id="training">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">核心差异三</span>
+      <h2 class="section-title">训练：把「用模型」和「训模型」放进同一个程序</h2>
+      <p class="section-desc">
+        多数产品只覆盖其中一段：聊天客户端不做 Agent 工具链，编程 IDE 不做多模型协同评测，
+        本地运行器不做训练闭环。破晓把三段放在同一套界面与同一份本地数据上。
+      </p>
+    </div>
+
+    <div class="steps" data-reveal>
+      <div class="step">
+        <div class="step__no">STEP 01</div>
+        <div class="step__title">数据集管理</div>
+        <div class="step__text">
+          登记或扫描数据集目录，支持分类、检测、分割、嵌入四类任务；
+          可按 8 : 1.5 : 0.5 比例一键划分训练 / 验证 / 测试集，种子可复现。
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__no">STEP 02</div>
+        <div class="step__title">参数配置与训练</div>
+        <div class="step__text">
+          默认框架 ultralytics，也可切 timm；轮次、批次、学习率等参数在界面里配置。
+          训练过程以结构化事件实时回流到日志面板，可随时中止。
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__no">STEP 03</div>
+        <div class="step__title">评估与导出</div>
+        <div class="step__text">
+          训练完成后做指标评估，导出 ONNX / TorchScript 权重，
+          并可直接在程序内加载模型对新图片推理验证。
+        </div>
+      </div>
+    </div>
+
+    <div class="quote" data-reveal>
+      训练功能依赖本机 <b>Python 环境</b>，首次使用需安装依赖（设置页可检查并一键安装）。
+      程序会先探测 Python、torch、CUDA 与已安装的包，把环境信息如实列出来，不会假装准备好了。
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 四点本质差异 ===================== -->
+<section class="section" id="core">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">核心优势</span>
+      <h2 class="section-title">八件具体的事</h2>
+    </div>
+
+    <ul class="numlist" data-reveal>
+      <li>
+        <span class="numlist__no">01</span>
+        <div>
+          <div class="numlist__title">不锁定厂商，随时换血</div>
+          <div class="numlist__text">
+            内置 DeepSeek、OpenAI、Anthropic、Gemini、Ollama 等协议适配，共 18 家提供方；
+            也可添加任意 OpenAI 兼容 / Anthropic / Gemini / Ollama 协议的自定义服务。新模型上线，填个名字就能用。
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="numlist__no">02</span>
+        <div>
+          <div class="numlist__title">任务级容错</div>
+          <div class="numlist__text">
+            协作与 Agent 运行都自带重试与降级，可配重试次数、退避间隔与 token 预算。
+            失败被隔离而不是中断整组任务，失败状态在界面上可见。
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="numlist__no">03</span>
+        <div>
+          <div class="numlist__title">过程可见、可追溯</div>
+          <div class="numlist__text">
+            成员状态、重试、失败原因、执行日志都可展开查看，不是黑箱等待。
+            右侧「运行」面板集中展示运行态与待确认操作。
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="numlist__no">04</span>
+        <div>
+          <div class="numlist__title">权限分级 + 审批</div>
+          <div class="numlist__text">
+            默认「仅工作区」：文件操作限制在你指定的白名单目录内。写盘、执行命令、联网可分别要求审批，
+            命令白名单与黑名单可自行维护。放开权限永远是显式选择。
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="numlist__no">05</span>
+        <div>
+          <div class="numlist__title">成本可核算</div>
+          <div class="numlist__text">
+            统计页按时间维度看 token 与费用，多模型并行花了多少一目了然，
+            便于判断「这个问题值不值得上混元」。
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="numlist__no">06</span>
+        <div>
+          <div class="numlist__title">为长任务设计的上下文管理</div>
+          <div class="numlist__text">
+            上下文预算与自动压缩阈值可调，多会话并行时各自的忙碌状态互不干扰。
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="numlist__no">07</span>
+        <div>
+          <div class="numlist__title">本地优先与可移植</div>
+          <div class="numlist__text">
+            便携版可拷到 U 盘运行，程序不依赖安装位置，代码无硬编码盘符。
+            会话、密钥、统计、训练权重全部落在本机。
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="numlist__no">08</span>
+        <div>
+          <div class="numlist__title">克制的界面与可调的动效</div>
+          <div class="numlist__text">
+            悬浮胶囊顶栏、玄夜 / 宣纸双主题；动效采用非线性曲线逐帧驱动，
+            并提供应用内动效开关，不受系统「减少动效」一刀切影响。需要无障碍优先时可切回跟随系统。
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== 数据主权 ===================== -->
+<section class="section section--alt" id="privacy">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">核心差异四</span>
+      <h2 class="section-title">数据在本机，模型的选择权在你</h2>
+      <p class="section-desc">
+        程序把请求发往<strong>你配置的</strong>模型服务；不接入云端就完全不联网。
+        对代码、合同、病历这类不便外发的内容，这一点是很多云端产品给不了的。
+      </p>
+    </div>
+
+    <div class="grid grid--4" data-reveal>
+      <div class="card card--flat">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>
+        </div>
+        <div class="card__title">会话与消息<span class="en">SQLite</span></div>
+        <div class="card__text">本地数据库文件，含会话、消息、运行记录、指标与协作记录。</div>
+      </div>
+      <div class="card card--flat">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        </div>
+        <div class="card__title">API Key<span class="en">safeStorage</span></div>
+        <div class="card__text">密钥存在本机配置文件，且用操作系统提供的加密能力保护。</div>
+      </div>
+      <div class="card card--flat">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 20V10M9 20V4M15 20v-7M21 20v-11"/></svg>
+        </div>
+        <div class="card__title">用量与费用<span class="en">Metrics</span></div>
+        <div class="card__text">按时间维度记录 token、费用、延迟与调用结果，供成本核算。</div>
+      </div>
+      <div class="card card--flat">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+        </div>
+        <div class="card__title">训练权重<span class="en">Local files</span></div>
+        <div class="card__text">数据集、训练运行记录与导出权重都保存在本机训练目录。</div>
+      </div>
+    </div>
+
+    <div class="quote" data-reveal>
+      全部数据位于 <code>%APPDATA%\破晓 Spark Harness\</code>。
+      <b>备份</b>就是直接复制这个目录；卸载不会删除它，需要清理时手动删即可。
+      除你主动配置的模型服务外，程序不向任何服务器上传数据。
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 安全 ===================== -->
+<section class="section" id="security">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">安全模型</span>
+      <h2 class="section-title">能力越大，闸门越要清楚</h2>
+      <p class="section-desc">
+        一个能读写文件、执行命令的 Agent，如果没有明确的边界就是风险。
+        这一层是本程序里被设计得最保守的部分。
+      </p>
+    </div>
+
+    <div class="grid grid--2" data-reveal>
+      <div class="card">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3l8 4v6c0 4-3.4 6.8-8 8-4.6-1.2-8-4-8-8V7z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div class="card__title">权限分级<span class="en">Permission modes</span></div>
+        <div class="card__text">
+          <b style="color:var(--text-1)">仅工作区（默认）</b> —— 文件操作限制在白名单根目录内，写盘与执行命令仍需审批。<br>
+          <b style="color:var(--text-1)">完全权限</b> —— 可访问整块磁盘，写盘与执行命令不再逐次询问。放开权限是敏感操作，需自行评估。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="card__title">审批与记忆<span class="en">Approval center</span></div>
+        <div class="card__text">
+          写盘、执行命令、联网可分别要求确认：单次允许、本会话允许、始终允许三档。
+          「始终允许」会被记住，避免重复打扰；也可以随时清空记忆。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2" fill="var(--accent)"/><circle cx="15" cy="12" r="2" fill="var(--accent)"/><circle cx="7" cy="18" r="2" fill="var(--accent)"/></svg>
+        </div>
+        <div class="card__title">命令白 / 黑名单<span class="en">Allow & deny lists</span></div>
+        <div class="card__text">
+          常用安全命令可加入白名单直接放行；危险模式加入黑名单直接拦下。
+          黑名单的判定在命令真正执行之前。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+        </div>
+        <div class="card__title">如实告知的风险<span class="en">Honest limits</span></div>
+        <div class="card__text">
+          「完全权限」下的 JavaScript 执行使用完整运行时，<b>不是沙箱</b> —— 审批是唯一的闸门。
+          联网工具对私网地址做了拦截，但域名解析层面的绕过尚未完全封堵。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 设计 ===================== -->
+<section class="section section--alt" id="design">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">界面</span>
+      <h2 class="section-title">玄夜与宣纸，两套配色同一套令牌</h2>
+      <p class="section-desc">
+        暗酒红作主色，暖白作文本，深煤灰作层级。浅色主题不是把深色反相，而是重新定义了一套表面与分割线，
+        保证两个主题下的对比度与层次都成立。
+      </p>
+    </div>
+
+    <div class="grid grid--2" data-reveal>
+      <div class="card">
+        <div class="card__title">配色令牌<span class="en">Design tokens</span></div>
+        <div class="card__text">
+          背景四级 <code style="font-family:var(--font-mono);font-size:13px">--bg-0 … --bg-4</code>、
+          文本四级 <code style="font-family:var(--font-mono);font-size:13px">--text-0 … --text-3</code>，
+          主色 <code style="font-family:var(--font-mono);font-size:13px">#8f303b</code> 在两个主题下保持一致，
+          另有语义色四组（成功 / 警告 / 错误 / 信息）。
+        </div>
+        <div class="card__text">
+          圆角、间距、阴影各有完整层级，界面里不出现「随手写一个 13px」这种值。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__title">动效契约<span class="en">Motion contract</span></div>
+        <div class="card__text">
+          位移与宽度这类需要中途打断的动画，由 JavaScript 逐帧插值驱动，使用非线性贝塞尔曲线
+          （先快后缓、末段轻微回弹）；纯 CSS 只负责 hover 这类不被打断的过渡。
+        </div>
+        <div class="card__text">
+          「界面动效」在应用里只有两档：<b style="color:var(--text-1)">始终播放</b>（默认）与
+          <b style="color:var(--text-1)">跟随系统</b>。默认不跟随系统，是因为 Windows 的「减少动效」
+          会把所有程序的过渡都压成瞬间完成，而很多人只是关掉了系统动画，并不想让应用变生硬。
+          （本页多了第三档「完全关闭」，那是网页自己补的便利，不属于应用的能力。）
+        </div>
+      </div>
+    </div>
+
+    <div class="quote" data-reveal>
+      页面上这两颗按钮是真的可以点的：右上角的<b>月亮 / 太阳</b>切换玄夜与宣纸，
+      <b>波形</b>按钮切换动效档位 —— 它们调用的就是上面这套令牌与契约。
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 安装 ===================== -->
+<section class="section" id="install">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">获取与安装</span>
+      <h2 class="section-title">两种方式，三分钟跑起来</h2>
+      <p class="section-desc">
+        Windows x64 桌面应用，版本 1.0.0。需要自备模型厂商的 API Key，或使用本机 Ollama；训练功能需要本机 Python。
+      </p>
+    </div>
+
+    <div class="grid grid--2" data-reveal>
+      <div class="card">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
+        </div>
+        <div class="card__title">方式一 · 安装包（推荐）<span class="en">Setup · 约 81.8 MB</span></div>
+        <div class="card__text">
+          运行 <code style="font-family:var(--font-mono);font-size:13px">PoxiaoSparkHarness-Setup-1.0.0.exe</code>。
+          可自选安装目录，自动创建桌面与开始菜单快捷方式，
+          <b>无需管理员权限</b>，卸载不会删除你的会话与配置。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7l8-4 8 4v10l-8 4-8-4z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg>
+        </div>
+        <div class="card__title">方式二 · 便携版（免安装）<span class="en">Portable · 约 111.8 MB</span></div>
+        <div class="card__text">
+          解压便携包，直接运行其中的 <code style="font-family:var(--font-mono);font-size:13px">PoxiaoSparkHarness.exe</code>。
+          可整体拷到 U 盘或其他目录，不依赖安装位置。
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid--3" style="margin-top:18px" data-reveal>
+      <div class="card card--flat">
+        <div class="card__title">首次启动</div>
+        <div class="card__text">
+          程序会探测本机 Ollama，未安装时首次启动可能慢 15~20 秒，属正常。
+          不需要本地模型时，到「设置 → 提供方」关闭 Ollama，之后启动明显变快。
+        </div>
+      </div>
+      <div class="card card--flat">
+        <div class="card__title">配置模型</div>
+        <div class="card__text">
+          「设置 → 提供方」打开要用的厂商、填入 API Key，密钥只保存在本机。
+          接入第三方中转或自建服务时，在该页底部添加自定义 API 并选择协议。
+        </div>
+      </div>
+      <div class="card card--flat">
+        <div class="card__title">开始工作</div>
+        <div class="card__text">
+          在「对话」里直接描述任务；要多个模型互相校验就切到「混元」；
+          想比较模型表现就切到「论衡」。
+        </div>
+      </div>
+    </div>
+
+    <div class="quote" data-reveal>
+      <b>关于 SmartScreen：</b>安装包与主程序<b>未做代码签名</b>，首次运行可能出现 Windows 提示，
+      选择「更多信息 → 仍要运行」即可。这与市面上的个人开发工具情况相同，不是本程序特有的异常。
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 快捷键 ===================== -->
+<section class="section section--tight section--alt" id="shortcuts">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">快捷键</span>
+      <h2 class="section-title">键盘上能做的事</h2>
+    </div>
+
+    <div class="keys" data-reveal>
+      <div class="key-row"><kbd>Ctrl</kbd> + <kbd>1</kbd> ~ <kbd>7</kbd><span>切换 对话 / 混元 / 论衡 / 训练 / 扩展 / 设置 / 统计</span></div>
+      <div class="key-row"><kbd>Ctrl</kbd> + <kbd>B</kbd><span>收起 / 展开左侧会话栏</span></div>
+      <div class="key-row"><kbd>Enter</kbd><span>发送消息（输入框内）</span></div>
+      <div class="key-row"><kbd>Shift</kbd> + <kbd>Enter</kbd><span>换行（输入框内）</span></div>
+      <div class="key-row"><kbd>Ctrl</kbd> + <kbd>Enter</kbd><span>发送（混元输入框）</span></div>
+      <div class="key-row"><kbd>Esc</kbd><span>关闭弹窗 / 取消当前操作</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 收尾 ===================== -->
+<section class="finale">
+  <div class="finale__bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <h2 data-reveal>你手上有几家模型的 Key，<br>它们本该能一起干活</h2>
+    <p data-reveal>
+      破晓 Spark Harness 把「用模型、选模型、训模型」放在同一套界面与同一份本地数据上，
+      并且默认假设你的数据不该离开你的电脑。
+    </p>
+    <div class="hero__cta" data-reveal>
+      <a class="btn btn--primary btn--lg" href="#install">下载安装包</a>
+      <a class="btn btn--ghost btn--lg" href="#why">回头看它解决什么问题</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== 页脚 ===================== -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="brand" style="margin-bottom:16px">
+          <span class="brand__seal" aria-hidden="true">破</span>
+          <span class="brand__text">
+            <span class="brand__cn">破晓 Spark Harness</span>
+            <span class="brand__en">SPARK HARNESS</span>
+          </span>
+        </div>
+        <p style="font-size:13.5px;color:var(--text-2);max-width:320px">
+          本地优先的多模型 AI 工作台。Windows x64 桌面应用，版本 1.0.0。
+        </p>
+      </div>
+      <div>
+        <h4>功能</h4>
+        <ul>
+          <li><a href="#views">七大视图</a></li>
+          <li><a href="#council">混元协作</a></li>
+          <li><a href="#arena">论衡评测</a></li>
+          <li><a href="#training">视觉训练</a></li>
+          <li><a href="#plugins">插件体系</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>技术</h4>
+        <ul>
+          <li>Electron 33</li>
+          <li>React 18 + TypeScript 5</li>
+          <li>Vite 5</li>
+          <li>SQLite 本地持久化</li>
+        </ul>
+      </div>
+      <div>
+        <h4>说明</h4>
+        <ul>
+          <li><a href="#privacy">数据与备份</a></li>
+          <li><a href="#security">权限与审批</a></li>
+          <li><a href="#shortcuts">快捷键</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__note">
+      <span>© 2025 破晓 Spark Harness · 界面字体来自小米 MiSans 与 Cascadia Code，遵循各自许可</span>
+      <span><code>版本 1.0.0</code> · 未做代码签名</span>
+    </div>
+  </div>
+</footer>
+
+<!-- 返回顶部 -->
+<button class="totop" id="toTop" type="button" aria-label="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+    <path d="M12 19V5M6 11l6-6 6 6"/>
+  </svg>
+</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>
